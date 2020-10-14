@@ -12,7 +12,7 @@ namespace GaripSozluk.Data.Domain
         public DateTime CreateDate { get; set; }
         public DateTime? UpdateDate { get; set; }
 
-
+        public DateTime BirthDate { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<Entry> Entries { get; set; }
         public virtual ICollection<EntryRating> Ratings { get; set; }

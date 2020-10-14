@@ -11,6 +11,7 @@ namespace GaripSozluk.Data.Mapping
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.Property(x => x.BirthDate);
 
             builder.HasMany(x => x.BlockedUsers)
                 .WithOne(b => b.User)

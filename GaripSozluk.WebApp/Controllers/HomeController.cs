@@ -32,7 +32,8 @@ namespace GaripSozluk.WebApp.Controllers
 
         public IActionResult Index(int postCategoryId=1, int Id=2 ,int selectPageNumber=1, SearchViewModel searchModel = null)
         {
-            ViewBag.query = _postService.GetAll(postCategoryId); //kategori id'ye göre bütün postları ve bütün entryleri getirir
+            ViewBag.query = _postService.GetAllCount(postCategoryId); //kategori id'ye göre bütün postları ve bütün entryleri getirir
+          
             ViewBag.querySelectedPost = _postService.Get(x => x.Id == Id);//postid ye göre tek post getirir
             ViewBag.queryCategory = _postCategoryService.GetAll();  //bütün kategorileri getirir
             ViewBag.querySelectedCategory = _postCategoryService.Get(x => x.Id == postCategoryId); //kategori id'ye göre tek kategori getiir

@@ -12,6 +12,7 @@ namespace GaripSozluk.Business.Interfaces
     {
         IQueryable<Post> GetAll();
         IQueryable<Post> GetAll(int id);
+        List<Post> GetAllCount(int id);
         Post Get(Expression<Func<Post,bool>> expression);
         IQueryable<Post> GetAllByString(string text);
         PostViewModel AddPost(PostViewModel model);

@@ -34,21 +34,6 @@ namespace GaripSozluk.WebApp.Controllers
 
 
 
-        public IActionResult Hebele()
-        {
-            //var queryViewBag= new List<string>();
-            var model = new PostCategoryViewModel();
-            using (var context = new GaripSozlukDbContext())
-            {
-                //var query = context.Posts
-                //.ToList();
-                ViewBag.queryCategory = context.PostCategories.ToList();
-            }
-
-
-            return View(model);
-        }
-
         [HttpGet]
         public IActionResult AddPostCategory()
         {

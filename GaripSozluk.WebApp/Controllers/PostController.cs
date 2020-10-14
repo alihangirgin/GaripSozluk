@@ -49,21 +49,7 @@ namespace GaripSozluk.WebApp.Controllers
             return Redirect(Url.Action("Index", "Home", new { Id=randomId }));
         }
 
-        
-        public IActionResult Hebele()
-        {
-            //var queryViewBag= new List<string>();
-            var model = new PostViewModel();
-            using (var context = new GaripSozlukDbContext())
-            {
-                //var query = context.Posts
-                    //.ToList();
-                ViewBag.query = context.Posts.ToList();
-            }
-            
-
-            return View(model);
-        }
+       
 
         [HttpGet]
         public IActionResult AddPost(int addPostId)

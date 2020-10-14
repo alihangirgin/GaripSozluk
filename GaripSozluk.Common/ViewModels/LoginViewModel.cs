@@ -4,9 +4,9 @@ namespace GaripSozluk.Common.ViewModels
 {
     public class LoginViewModel
     {
-        [Required(ErrorMessage ="Email zorunludur")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Kullanıcı Adı")]
+        [Required(ErrorMessage ="Kullanıcı Adı zorunludur")]
+        public string UserName { get; set; }
 
         [Required(ErrorMessage = "Şifre zorunludur")]
         [DataType(DataType.Password)]

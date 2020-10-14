@@ -66,7 +66,7 @@ namespace GaripSozluk.WebApp.Controllers
 
         }
         [Authorize]
-        public IActionResult Dislike(EntryRatingViewModel model, int entryDislikeId)
+        public IActionResult Dislike(EntryRatingViewModel model, int entryDislikeId, int postId)
         {
             var UserId = 0;
             var user = HttpContext.User;
@@ -81,7 +81,7 @@ namespace GaripSozluk.WebApp.Controllers
                 model.UserId = UserId;
                 _entryRatingService.AddDislike(model);
             }
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(HomeController.Index), "Home", new { id = postId });
 
         }
 

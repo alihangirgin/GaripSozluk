@@ -104,6 +104,34 @@ namespace GaripSozluk.Business.Services
         }
 
 
+        public List<Post> GetAllCount(int id)
+        {
+            var user = _httpContext.HttpContext.User;
+            int? UserId = null;
+            List<int> blockedUserIdList = new List<int>();
+
+            if (user.Claims.Count() > 0)
+            {
+                UserId = int.Parse(user.Claims.ToList().First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+                foreach (var item in _blockedUserService.GetAll(UserId.Value))
+                {
+                    blockedUserIdList.Add(item.BlockedUserId);
+                }
+            }
+            //List<int> countBlockedEntryList = new List<int>();
+            var query = _postRepository.GetAllWithEntries(id).ToList();
+            //query=query.Where(x => !blockedUserIdList.Contains(x.UserId));
+            foreach (var item in query)
+            {
+                item.Entries = item.Entries.Where(x => !blockedUserIdList.Contains(x.UserId)).ToList();
+                //countBlockedEntryList.Add(item.Entries.Count() - 1);
+            }
+            return query;
+        }
+
+
+
+
         public IQueryable<Post> GetAllByString(string text)
         {
 
@@ -179,7 +207,6 @@ namespace GaripSozluk.Business.Services
              
             }
             
-
             var itemSize = 5;
             var postListVM = new PostListVM();
             var getPost = _postRepository.Get(x => x.Id == id);

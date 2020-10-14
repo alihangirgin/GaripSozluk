@@ -1,9 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace GaripSozluk.Common.ViewModels
 {
     public class RegisterViewModel
     {
+
+
+        [Required(ErrorMessage = "Kullanıcı Adı zorunludur")]
+        [Display(Name = "Kullanıcı Adı")]
+        public string UserName { get; set; }
+
         [Required(ErrorMessage = "Email zorunludur")]
         [EmailAddress]
         [Display(Name = "Email")]
@@ -19,5 +26,11 @@ namespace GaripSozluk.Common.ViewModels
         [Display(Name = "Şifre Tekrar")]
         [Compare("Password", ErrorMessage = "Şifreler aynı olmalıdır.")]
         public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage ="Doğum Tarihi Zorunludur")]
+        [DataType(DataType.Date)]
+        [Display(Name = "Doğum Tarihi")]
+        public DateTime BirthDate { get; set; }
+
     }
 }
