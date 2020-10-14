@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewData["Title"] = "Engellenen Kullanıcılar";
+}
+
+<h1>Engellenen Kullanıcılar</h1>
+
+@foreach (var item in ViewBag.queryGetBlockedUser)
+{
+    <h1 class="display-4">@item.User.UserName</h1>
+    <a class="nav-link text-dark col-md-2" asp-area="" asp-route-blockCurrentUserId="@item.UserId"  asp-route-blockBlockedUserId="@item.User.Id" asp-controller="User" asp-action="RemoveBlock">Engeli Kaldır</a>
+}

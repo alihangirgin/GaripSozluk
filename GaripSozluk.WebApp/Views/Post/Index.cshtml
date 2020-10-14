@@ -1,0 +1,22 @@
+﻿@model IQueryable<GaripSozluk.Data.Domain.Post>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Başlık</th>
+            <th>İŞLEMLER</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Title</td>
+                <td><a class="btn btn-info" href="@Url.Action("UpdatePost","Post",new { id = item.Id })">Düzenle</a> | <a class="btn btn-danger" href="@Url.Action("Delete","Post")">Sil</a></td>
+                <td></td>
+            </tr>
+        }
+    </tbody>
+</table>

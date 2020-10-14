@@ -1,0 +1,18 @@
+﻿@model GaripSozluk.Common.ViewModels.PostCategoryViewModel
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <h4>Kategori Ekle.</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-default">Kaydet</button>
+        </form>
+    </div>
+</div>
