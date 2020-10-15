@@ -33,7 +33,7 @@
                     {
                         <a class="btn btn-link text-light" asp-area="" asp-route-addPostId="@ViewBag.querySelectedCategory.Id" asp-controller="Post" asp-action="AddPost">Başlık Aç</a>}
                         <a class="btn btn-link text-light" href="/PostCategory/AddPostCategory">Kategori Aç</a>
-                        <a class="nav-link" href="#">@User.Identity.Name</a>
+                        <a class="btn btn-link text-light" href="#">@User.Identity.Name</a>
                         <h4><a class="btn btn-light" href="@Url.Action("Logout", "Account")">Çıkış</a></h4> @*<a class="btn btn-link text-light col-md-1" href="/User/GetBlockedUsers">Engellenen Kullanıcılar</a>*@
                         @if (ViewBag.queryGetCurrentUserInfo != null)
                         {

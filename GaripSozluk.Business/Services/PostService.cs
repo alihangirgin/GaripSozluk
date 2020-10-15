@@ -118,15 +118,24 @@ namespace GaripSozluk.Business.Services
                     blockedUserIdList.Add(item.BlockedUserId);
                 }
             }
-            //List<int> countBlockedEntryList = new List<int>();
+
+            var List = new List<Post>();
             var query = _postRepository.GetAllWithEntries(id).ToList();
-            //query=query.Where(x => !blockedUserIdList.Contains(x.UserId));
             foreach (var item in query)
             {
-                item.Entries = item.Entries.Where(x => !blockedUserIdList.Contains(x.UserId)).ToList();
-                //countBlockedEntryList.Add(item.Entries.Count() - 1);
+                var row = new Post();
+                row.CategoryId = item.CategoryId;
+                row.UserId = item.UserId;
+                row.Title = item.Title;
+                row.ClickCount = item.ClickCount;
+                row.UpdateDate = item.UpdateDate;
+                row.CreateDate = item.CreateDate;
+                row.Entries = item.Entries.Where(x => !blockedUserIdList.Contains(x.UserId)).ToList();
+                List.Add(row);
+                
+                
             }
-            return query;
+            return List;
         }
 
 
