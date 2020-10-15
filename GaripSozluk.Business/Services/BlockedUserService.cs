@@ -19,6 +19,7 @@ namespace GaripSozluk.Business.Services
             _blockedUserRepository = blockedUserRepository;
         }
 
+        //Todo: ekleme, güncelleme,silme gibi işlemlerde önyüzdeki kullanıcıya işlem başarıyla gerçekleşti veya başarısız bilgisi vermek isteyebiliriz. böyle durumlarda alttaki metot için void dönmek yerine ya boolean true false ya da int 1,0, -1 gibi bir şeyler dönecek halde kullanmak daha iyi olur. Projenin sonraki aşamalarda nasıl gelişebileceğini düşünerek kod yazmak avantaj sağlar. 
         public void AddBlock(UserBlockVM model)
         {
 

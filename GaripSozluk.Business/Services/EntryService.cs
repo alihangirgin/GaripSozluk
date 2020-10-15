@@ -76,6 +76,7 @@ namespace GaripSozluk.Business.Services
             return _entryRepository.GetAll();
         }
 
+        //Todo: bu methodun adı GetAllEntriesByPostId olarak değişebilir. bu projeyi yazan tek kişi için sorun olmaz ama, yarın bir gün bir ekipte çalışırken senin dışında çalışan kişilerle beraber bir standart belirlemek durumundasınız. Senin yazdığın kodu o anlamama durumu yaşamaması için isimlendirmeleri standart hale getirmelisin.
         public IQueryable<Entry> GetAll(int id)
         {
 

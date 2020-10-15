@@ -183,6 +183,8 @@ namespace GaripSozluk.Business.Services
                     query = query.Where(x => (x.CreateDate >= minDate.Value && x.CreateDate <= maxDate.Value));
                 }
             }
+
+            //Todo: sorttype değişkeninin karşısındaki 1,2 gibi sayısal değerler yerine buralarda enum kullanabilirsin. proje geliştikçe bu 1 veya 2 neye karşılık geliyordu diye düşünmemek lazım. anlamlı bir enum prop adı koyabilirsin. mesela SortEnum.AscendingOrder=1, SortEnum.DescendingOrder = 2 gibi... kodda mümkün oldukça dümdüz sayısal değerler kullanmaktan ve string olarak metinsel ifadeler kullanmaktan kaçınmalıyız. (hardcoded string denir buna) uzak durmalıyız.
             if (detailedSearch.SortType == 1)
             {
                 query = query.OrderByDescending(x => x.CreateDate);
