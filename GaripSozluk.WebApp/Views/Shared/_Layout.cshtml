@@ -18,39 +18,39 @@
                     <button class="btn btn-success" type="submit">Search</button>
                 </form>
                 <a class="btn btn-link text-light" href="/Home/DetailedSearch">Detaylı Ara</a>
+                <a class="btn btn-link text-light" href="/WebApi/WebApiSearch">Web Api</a>
                 <a class="btn btn-link text-light" asp-controller="Post" asp-action="Random">Rastgele</a>
 
                 <div class="col-md-1"></div>
 
                 @if (!User.Identity.IsAuthenticated)
                 {
-                    <a class="btn btn-link text-light" href="/Account/Register">Kayıt ol</a>
-                    <a class="btn btn-link text-light col-md-1" href="/Account/Login">Giriş Yap</a>
-                    <a class="btn btn-link text-light col-md-1" href="/Account/ForgotPassword">Şifremi Unuttum</a> }
-                else
-                {
-                    @if (ViewBag.querySelectedCategory != null)
-                    {
-                        <a class="btn btn-link text-light" asp-area="" asp-route-addPostId="@ViewBag.querySelectedCategory.Id" asp-controller="Post" asp-action="AddPost">Başlık Aç</a>}
-                        <a class="btn btn-link text-light" href="/PostCategory/AddPostCategory">Kategori Aç</a>
-                        <a class="btn btn-link text-light" href="#">@User.Identity.Name</a>
-                        <h4><a class="btn btn-light" href="@Url.Action("Logout", "Account")">Çıkış</a></h4> @*<a class="btn btn-link text-light col-md-1" href="/User/GetBlockedUsers">Engellenen Kullanıcılar</a>*@
-                        @if (ViewBag.queryGetCurrentUserInfo != null)
-                        {
-                            <a class="nav-link text-light col-md-2" asp-area="" asp-route-blockCurrentUserId="@ViewBag.queryGetCurrentUserInfo.UserId" asp-controller="User" asp-action="GetBlockedUsers">Engellenen Kullanıcılar</a>}
-                        }
+            <a class="btn btn-link text-light" href="/Account/Register">Kayıt ol</a>
+                            <a class="btn btn-link text-light col-md-1" href="/Account/Login">Giriş Yap</a>
+                                            <a class="btn btn-link text-light col-md-1" href="/Account/ForgotPassword">Şifremi Unuttum</a> }
+                                        else
+                                        {
+                            @if (ViewBag.querySelectedCategory != null)
+                            {
+            <a class="btn btn-link text-light" asp-area="" asp-route-addPostId="@ViewBag.querySelectedCategory.Id" asp-controller="Post" asp-action="AddPost">Başlık Aç</a>}
+                                            <a class="btn btn-link text-light" href="/PostCategory/AddPostCategory">Kategori Aç</a>
+                                                            <a class="btn btn-link text-light" href="#">@User.Identity.Name</a>
+                                                                            <h4><a class="btn btn-light" href="@Url.Action("Logout", "Account")">Çıkış</a></h4> @*<a class="btn btn-link text-light col-md-1" href="/User/GetBlockedUsers">Engellenen Kullanıcılar</a>*@
+                                                                                            @if (ViewBag.queryGetCurrentUserInfo != null)
+                                                                                            {
+                                                                            <a class="nav-link text-light col-md-2" asp-area="" asp-route-blockCurrentUserId="@ViewBag.queryGetCurrentUserInfo.UserId" asp-controller="User" asp-action="GetBlockedUsers">Engellenen Kullanıcılar</a>}
+                                                                                        }
 
-                        <div class="row col-12">
-                        <div class="navbar-collapse bg-dark navbar-dark collapse d-sm-inline-flex flex-sm-row-reverse col-12">
+                <div class="row col-12">
+                    <div class="navbar-collapse bg-dark navbar-dark collapse d-sm-inline-flex flex-sm-row-reverse col-12">
                         @if (ViewBag.queryCategory != null)
                         {
-                            @foreach (var item in ViewBag.queryCategory)
-                            {
-                                <div class="col-md-2">  @*kategoriler*@
-                                    <a class="nav-link text-light col-md-2" asp-area="" asp-route-postCategoryId="@item.Id" asp-controller="Home" asp-action="Index">#@item.Title</a>
-                                </div>
-                             } 
-                        }
+            @foreach (var item in ViewBag.queryCategory)
+            {
+            <div class="col-md-2">
+                @*kategoriler*@
+                <a class="nav-link text-light col-md-2" asp-area="" asp-route-postCategoryId="@item.Id" asp-controller="Home" asp-action="Index">#@item.Title</a>
+            </div>}}
                     </div>
                 </div>
             </div>

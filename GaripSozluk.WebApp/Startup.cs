@@ -36,6 +36,7 @@ namespace GaripSozluk.WebApp
             var connectionString = Configuration.GetConnectionString("AppDatabase");
             services.AddDbContext<GaripSozlukDbContext>(options => options.UseSqlServer(connectionString));
 
+            services.AddScoped<IRestSharpService, RestSharpService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IBlockedUserService, BlockedUserService>();
