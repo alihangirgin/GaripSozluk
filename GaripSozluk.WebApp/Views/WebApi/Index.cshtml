@@ -1,0 +1,32 @@
+﻿@model GaripSozluk.Common.ViewModels.RestApiSearchVM
+@{
+    ViewData["Title"] = "Ara Web-Api";
+}
+
+<h1>Ara-Web Api</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Search" asp-controller="WebApi" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Keyword" class="control-label"></label>
+                <input asp-for="Keyword" class="form-control" />
+                <span asp-validation-for="Keyword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <select name="SearchType">
+                    <option value="1">Yazar</option>
+                    <option value="2">Kitap</option>
+                </select>
+
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Ara</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+

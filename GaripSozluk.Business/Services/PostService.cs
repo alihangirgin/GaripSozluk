@@ -64,6 +64,35 @@ namespace GaripSozluk.Business.Services
             }
         }
 
+
+
+
+        public void AddPostFromArray(string[] stringArray)
+        {
+
+            var user = _httpContext.HttpContext.User;
+            var UserId = int.Parse(user.Claims.ToList().First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+
+            foreach (var item in stringArray)
+            {
+                var post = new Post();
+                post.CategoryId = 6;
+                post.ClickCount = 0;
+                post.Title = item;
+                post.UserId = UserId;
+                post.CreateDate = DateTime.Now;
+
+                _postRepository.Add(post);
+                _postRepository.SaveChanges();
+            }
+
+        }
+
+
+
+
+
+
         public Post UpdatePost(Post postViewModel)
         {
             var model = _postRepository.Get(x => x.Id == postViewModel.Id);

@@ -8,6 +8,10 @@ namespace GaripSozluk.Business.Interfaces
 {
     public interface IRestSharpService
     {
-        RestApiSearchRowVM Search(string authorName);
+        RestApiSearchAuthorRowVM AuthorSearch(string authorName);
+        
+        RestApiSearchTitleRowVM TitleSearch(string title);
+
+        RestApiSearchVM SearchApi(RestApiSearchVM model);
     }
 }

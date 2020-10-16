@@ -4,9 +4,8 @@ using System.Text;
 
 namespace GaripSozluk.Common.ViewModels
 {
-    public class RestApiSearchRowVM
+    public class ApiResultSendViewModel
     {
-        public string authorName { get; set; }
-        public Doc[] docs { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }
