@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GaripSozluk.Business.Interfaces;
 using GaripSozluk.Common.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -35,6 +36,7 @@ namespace GaripSozluk.WebApp.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Search(RestApiSearchVM searchmodel = null)
         {

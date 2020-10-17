@@ -9,41 +9,42 @@ using System.Text;
 
 namespace GaripSozluk.Data.Repositories
 {
-    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
+    public class LogRepository : ILogRepository
     {
-        private readonly GaripSozlukDbContext _context;
-        private readonly DbSet<TEntity> _dbSet;
-        public BaseRepository(GaripSozlukDbContext context)
+        private readonly LogDbContext _contextLog;
+        private readonly DbSet<Log> _dbSet;
+        public LogRepository(LogDbContext context) 
         {
-            _context = context;
-            _dbSet = _context.Set<TEntity>();
+            _contextLog = context;
+            _dbSet = _contextLog.Set<Log>();
         }
 
 
-        public TEntity Add(TEntity entity)
+        public Log Add(Log entity)
         {
             var entityEntry = _dbSet.Add(entity);
             return entityEntry.Entity;
         }
 
-        public TEntity Get(Expression<Func<TEntity, bool>> expression)
+
+        public Log Get(Expression<Func<Log, bool>> expression)
         {
             var result = _dbSet.Where(expression).FirstOrDefault();
             return result;
         }
 
-        public IQueryable<TEntity> GetAll()
+        public IQueryable<Log> GetAll()
         {
             return _dbSet.AsQueryable();
         }
 
-        public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> expression)
+        public IQueryable<Log> GetAll(Expression<Func<Log, bool>> expression)
         {
             var result = _dbSet.Where(expression).AsQueryable();
             return result;
         }
 
-        public TEntity Update(TEntity entity)
+        public Log Update(Log entity)
         {
             var entityEntry = _dbSet.Update(entity);
             return entityEntry.Entity;
@@ -51,13 +52,13 @@ namespace GaripSozluk.Data.Repositories
 
         public int SaveChanges()
         {
-            return _context.SaveChanges();
+            return _contextLog.SaveChanges();
         }
 
-        public int Remove(TEntity entity)
+        public int Remove(Log entity)
         {
-            _context.Remove(entity);
-            return _context.SaveChanges();
+            _contextLog.Remove(entity);
+            return _contextLog.SaveChanges();
         }
 
     }

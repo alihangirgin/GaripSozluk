@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GaripSozluk.Data.Migrations
 {
     [DbContext(typeof(GaripSozlukDbContext))]
-    [Migration("20201012103641_hayırlı olsun")]
-    partial class hayırlıolsun
+    [Migration("20201017195716_hayırlısı")]
+    partial class hayırlısı
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,7 +42,7 @@ namespace GaripSozluk.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("BlockedUserId");
 
                     b.ToTable("BlockedUsers");
                 });
@@ -213,6 +213,9 @@ namespace GaripSozluk.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -385,8 +388,8 @@ namespace GaripSozluk.Data.Migrations
                 {
                     b.HasOne("GaripSozluk.Data.Domain.User", "User")
                         .WithMany("BlockedUsers")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("BlockedUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

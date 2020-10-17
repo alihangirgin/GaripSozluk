@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MovieStore.WebApp.Extensions;
 
 namespace GaripSozluk.WebApp
 {
@@ -33,9 +34,13 @@ namespace GaripSozluk.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("AppDatabase");
-            services.AddDbContext<GaripSozlukDbContext>(options => options.UseSqlServer(connectionString));
 
+            var connectionString = Configuration.GetConnectionString("AppDatabase");
+            var connectionStringPostgre = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<GaripSozlukDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<LogDbContext>(options => options.UseNpgsql(connectionStringPostgre));
+
+            services.AddScoped<ILogService, LogService>();
             services.AddScoped<IRestSharpService, RestSharpService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IPostService, PostService>();
@@ -43,12 +48,14 @@ namespace GaripSozluk.WebApp
             services.AddScoped<IPostCategoryService, PostCategoryService>();
             services.AddScoped<IEntryService, EntryService>();
             services.AddScoped<IEntryRatingService, EntryRatingService>();
+
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IPostCategoryRepository, PostCategoryRepository>();
             services.AddScoped<IEntryRepository, EntryRepository>();
             services.AddScoped<IEntryRatingRepository, EntryRatingRepository>();
             services.AddScoped<IBlockedUserRepository, BlockedUserRepository>();
-
+            services.AddScoped<ILogRepository, LogRepository>();
+                
             services.AddHttpContextAccessor();
 
             //services.AddTransient<ClaimsPrincipal>(s => s.GetService<IHttpContextAccessor>().HttpContext.User);
@@ -109,6 +116,8 @@ namespace GaripSozluk.WebApp
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<ExecutionTimeMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GaripSozluk.Data.Migrations
 {
-    public partial class hayırlıolsun : Migration
+    public partial class hayırlısı : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,7 +46,8 @@ namespace GaripSozluk.Data.Migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     FullName = table.Column<string>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
-                    UpdateDate = table.Column<DateTime>(nullable: true)
+                    UpdateDate = table.Column<DateTime>(nullable: true),
+                    BirthDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -189,11 +190,10 @@ namespace GaripSozluk.Data.Migrations
                 {
                     table.PrimaryKey("PK_BlockedUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BlockedUsers_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_BlockedUsers_AspNetUsers_BlockedUserId",
+                        column: x => x.BlockedUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -321,9 +321,9 @@ namespace GaripSozluk.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BlockedUsers_UserId",
+                name: "IX_BlockedUsers_BlockedUserId",
                 table: "BlockedUsers",
-                column: "UserId");
+                column: "BlockedUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Entries_PostId",
