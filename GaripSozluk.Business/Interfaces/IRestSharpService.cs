@@ -13,5 +13,6 @@ namespace GaripSozluk.Business.Interfaces
         RestApiSearchTitleRowVM TitleSearch(string title);
 
         RestApiSearchVM SearchApi(RestApiSearchVM model);
+        RestApiSearchVM SearchPostApi(string itemText);
     }
 }

@@ -28,20 +28,6 @@ namespace GaripSozluk.WebApp.Controllers
             return View();
         }
 
-        public IActionResult WebApiSearchAuthor(string authorName= "J.R.R. Tolkien")
-        {
-            _restSharpService.AuthorSearch(authorName);
-            return View();
-        }
-
-        public IActionResult WebApiSearchTitle(string title = "The Lord of the Rings")
-        {
-            _restSharpService.TitleSearch(title);
-
-            return View();
-        }
-
-
 
 
         public IActionResult Search()
@@ -57,13 +43,24 @@ namespace GaripSozluk.WebApp.Controllers
             return View(searchmodel);
         }
 
+
+        public IActionResult SearchFromPost(string itemTitle)
+        {
+           var queryPostApi = _restSharpService.SearchPostApi(itemTitle);
+
+            return View(queryPostApi);
+        }
+
+
         
         [HttpPost]
         public IActionResult AddFromApi(string[] ItemList)
         {
-            _postService.AddPostFromArray(ItemList);
+            _postService.AddPostFromArrayBook(ItemList);
             return Json(new { status = "success" });
         }
+
+
 
 
 

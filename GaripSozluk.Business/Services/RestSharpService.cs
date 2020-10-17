@@ -86,8 +86,50 @@ namespace GaripSozluk.Business.Services
 
 
 
+        public RestApiSearchVM SearchPostApi(string itemText)
+        {
+            var returnRow = new RestApiSearchVM();
 
+            if (itemText.EndsWith("(Kitap)"))
+            {
+                int length = itemText.Length-7;
+                itemText=itemText.Remove(length);
 
+                var client = new RestClient($"http://openlibrary.org/search.json?title=" + itemText);
+                var request = new RestRequest(Method.GET);
+                IRestResponse response = client.ExecuteAsync(request).Result;
+                if (response.IsSuccessful)
+                {
+                    var content = JsonConvert.DeserializeObject<RestApiSearchVM>(response.Content);
+                    content.docs = content.docs.OrderByDescending(x => x.first_publish_year).ToList();
+                    return content;
+                }
+            }
+            else
+            {
+                int length = itemText.Length - 7;
+                itemText=itemText.Remove(length);
+
+                var client = new RestClient($"http://openlibrary.org/search.json?author=" + itemText);
+                var request = new RestRequest(Method.GET);
+                IRestResponse response = client.ExecuteAsync(request).Result;
+                if (response.IsSuccessful)
+                {
+                    var content = JsonConvert.DeserializeObject<RestApiSearchVM>(response.Content);
+                    content.docs = content.docs.OrderByDescending(x => x.first_publish_year).ToList();
+                    return content;
+                }
+            }
+       
+
+            return returnRow;
         }
+
+
+
+
+
+
+    }
 }
 

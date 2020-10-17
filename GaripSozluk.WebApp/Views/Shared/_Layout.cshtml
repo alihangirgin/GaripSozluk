@@ -66,18 +66,58 @@
                     <h1 class="display-6">@ViewBag.querySelectedCategory.Title</h1>
                      @foreach (var item in ViewBag.query)
                       {
-                        <li class="list-group-item border-0">
-                            <a class="btn btn-light d-flex justify-content-between align-items-center" asp-route-postCategoryId="@ViewBag.postCategoryId" asp-controller="home" asp-action="index" asp-route-Id="@item.Id">
-                                @item.Title
-                                @{ var entryCount = (item.Entries?.Count - 1 ?? 0);
-                                     if (entryCount > 0)
-                                     {
-                                        <span class="badge badge-primary badge-pill">@entryCount</span>
-                                     } 
-                      }
+            <li class="list-group-item border-0">
 
-                            </a>
-                                </li>
+                            @if (ViewBag.postCategoryId == 6)
+                             {
+                                 <a class="btn btn-light d-flex justify-content-between align-items-center" asp-route-itemTitle="@item.Title" asp-route-postCategoryId="@ViewBag.postCategoryId" asp-controller="WebApi" asp-action="SearchFromPost" asp-route-Id="@item.Id">
+                                 @item.Title
+                                 @{ var entryCount = (item.Entries?.Count - 1 ?? 0);
+                                 if (entryCount > 0)
+                                   {
+                                            <span class="badge badge-primary badge-pill">@entryCount</span> 
+                                    } 
+                                 }
+                                      </a> 
+
+                              }
+
+
+                            @if (ViewBag.postCategoryId == 7)
+                             {
+                                 <a class="btn btn-light d-flex justify-content-between align-items-center" asp-route-itemTitle="@item.Title" asp-route-postCategoryId="@ViewBag.postCategoryId" asp-controller="WebApi" asp-action="SearchFromPost" asp-route-Id="@item.Id">
+                                 @item.Title
+                                 @{ var entryCount = (item.Entries?.Count - 1 ?? 0);
+                                 if (entryCount > 0)
+                                   {
+                                            <span class="badge badge-primary badge-pill">@entryCount</span> 
+                                    } 
+                                 }
+                                      </a> 
+
+                              }
+
+
+
+
+                 @if (ViewBag.postCategoryId != 7 && ViewBag.postCategoryId != 6)
+                 {
+                      <a class="btn btn-light d-flex justify-content-between align-items-center" asp-route-postCategoryId="@ViewBag.postCategoryId" asp-controller="Home" asp-action="index" asp-route-Id="@item.Id">
+                      @item.Title
+                      @{ 
+                          var entryCount = (item.Entries?.Count - 1 ?? 0);
+                            if (entryCount > 0)
+                            {
+                                <span class="badge badge-primary badge-pill">@entryCount</span> 
+                             } 
+                        }
+                       </a>
+
+                   }
+
+
+
+            </li>
 
 
                     } 

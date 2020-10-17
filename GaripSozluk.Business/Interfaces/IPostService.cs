@@ -21,7 +21,7 @@ namespace GaripSozluk.Business.Interfaces
         PostListVM GetPostById(int id,int currentPage,SearchViewModel searchModel=null);
         DetailedSearchViewModel GetAllDetailed(DetailedSearchViewModel detailedSearch);
 
-        void AddPostFromArray(string[] stringArray);
+        void AddPostFromArrayBook(string[] stringArray);
 
         int GetRandomId();
 

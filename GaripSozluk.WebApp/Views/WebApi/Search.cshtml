@@ -1,9 +1,9 @@
 ﻿@model GaripSozluk.Common.ViewModels.RestApiSearchVM
 @{
-    ViewData["Title"] = "Search";
+    ViewData["Title"] = "Bulunan Kitaplar";
 }
 
-<h1>Search</h1>
+<h1>Bulunan Kitaplar</h1>
 
 @if (Model != null)
 {
@@ -11,33 +11,40 @@
     <div class="col-md-12">
         <ul class="list-group" id="ItemList">
 
+
+
             @foreach (var item in Model.docs)
             {
-    
-                    <li class="list-group-item">
-                        <div class="checkbox">
+
+                <li class="list-group-item">
+                    <div class="checkbox">
 
 
-                            <input type="checkbox" value="@item.title" />
-                            <label for="Check_@item.title">@item.title</label>
+                        <input type="checkbox" value="@(item.title+"(Kitap)" )" />
 
-                            @if (item.author_name != null)
-                            {
-                                <label for="Check_@item.author_name.FirstOrDefault()">@item.author_name.FirstOrDefault()</label>
-                            }
+                        <label for="Check_@item.title">Kitap Adı:@item.title---</label>
 
-                            <label for="Check_@item.first_publish_year">@item.first_publish_year</label>
+                        @if (item.author_name != null)
+                        {
+                            <input type="checkbox" value="@(item.author_name.FirstOrDefault()+"(Yazar)")" />
+                            <label for="Check_@item.author_name.FirstOrDefault()">Yazar Adı:@item.author_name.FirstOrDefault()---</label>
+                        }
+
+                        <label for="Check_@item.first_publish_year">Çıkış Yılı:@item.first_publish_year</label>
 
 
-                        </div>
-                    </li>
+                    </div>
+                </li>
 
             }
+
+
             <li class="list-group-item">
-                <a class="btn btn-success btn-block" id="newCountry">Ekle</a>
+                <a class="btn btn-success btn-block" id="AddDb">Ekle</a>
             </li>
         </ul>
     </div>
+
 }
 
 
@@ -47,7 +54,7 @@
 {
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#newCountry").on("click", function (e) {
+            $("#AddDb").on("click", function (e) {
                 var arrItem = [];
                 var dataString = "";
 

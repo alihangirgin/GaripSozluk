@@ -67,7 +67,7 @@ namespace GaripSozluk.Business.Services
 
 
 
-        public void AddPostFromArray(string[] stringArray)
+        public void AddPostFromArrayBook(string[] stringArray)
         {
 
             var user = _httpContext.HttpContext.User;
@@ -76,7 +76,15 @@ namespace GaripSozluk.Business.Services
             foreach (var item in stringArray)
             {
                 var post = new Post();
-                post.CategoryId = 6;
+                if(item.EndsWith("(Kitap)"))
+                {
+                    post.CategoryId = 6;
+                }
+                else
+                {
+                    post.CategoryId = 7;
+                }
+
                 post.ClickCount = 0;
                 post.Title = item;
                 post.UserId = UserId;
@@ -87,9 +95,6 @@ namespace GaripSozluk.Business.Services
             }
 
         }
-
-
-
 
 
 
@@ -153,6 +158,7 @@ namespace GaripSozluk.Business.Services
             foreach (var item in query)
             {
                 var row = new Post();
+                row.Id = item.Id;
                 row.CategoryId = item.CategoryId;
                 row.UserId = item.UserId;
                 row.Title = item.Title;

@@ -17,17 +17,19 @@ namespace GaripSozluk.WebApp.Controllers
     {
         private readonly ILogger<PostController> _logger;
         private readonly IPostService _postService;
+        private readonly IRestSharpService _restSharpService;
         private readonly IPostCategoryService _postCategoryService;
         private readonly IEntryService _entryService;
         private readonly IAccountService _accountService;
 
-        public HomeController(ILogger<PostController> logger, IPostService postService, IPostCategoryService postCategoryService, IEntryService entryService, IAccountService accountService)
+        public HomeController(ILogger<PostController> logger, IPostService postService, IPostCategoryService postCategoryService, IEntryService entryService, IAccountService accountService, IRestSharpService restSharpService)
         {
             _logger = logger;
             _postService = postService;
             _postCategoryService = postCategoryService;
             _entryService = entryService;
             _accountService = accountService;
+            _restSharpService = restSharpService;
         }
 
         public IActionResult Index(int postCategoryId=1, int Id=2 ,int selectPageNumber=1, SearchViewModel searchModel = null)

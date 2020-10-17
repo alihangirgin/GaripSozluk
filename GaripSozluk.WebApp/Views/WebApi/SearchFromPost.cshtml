@@ -1,0 +1,44 @@
+﻿@model GaripSozluk.Common.ViewModels.RestApiSearchVM
+@{
+    ViewData["Title"] = "WebApiSearch";
+}
+
+<h1>Bulunan Sonuçlar</h1>
+
+
+
+@if (Model != null)
+{
+
+    <div class="col-md-12">
+        <ul class="list-group" id="ItemList">
+
+
+
+            @foreach (var item in Model.docs)
+            {
+
+                <li class="list-group-item">
+                        <div class="row">
+
+
+
+                        <label for="Check_@item.title">Kitap Adı:@item.title---</label>
+
+                        @if (item.author_name != null)
+                        {
+                            <label for="Check_@item.author_name.FirstOrDefault()">Yazar Adı:@item.author_name.FirstOrDefault()---</label>
+                        }
+
+                        <label for="Check_@item.first_publish_year">Çıkış Yılı:@item.first_publish_year</label>
+
+
+                    </div>
+                </li>
+
+            }
+
+        </ul>
+    </div>
+
+}
