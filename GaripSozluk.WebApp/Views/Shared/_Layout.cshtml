@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - GaripSozluk.WebApp</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
     <link rel="stylesheet" href="~/css/site.css" />
+
 </head>
 <body>
     <nav class="navbar bg-dark navbar-dark border-bottom sticky-top shadow content">
@@ -19,6 +21,7 @@
                 </form>
                 <a class="btn btn-link text-light" href="/Home/DetailedSearch">Detaylı Ara</a>
                 <a class="btn btn-link text-light" href="/WebApi/Index">Web Api</a>
+                <a class="btn btn-link text-light" href="/Log/Index">Log</a>
                 <a class="btn btn-link text-light" asp-controller="Post" asp-action="Random">Rastgele</a>
 
                 <div class="col-md-1"></div>
@@ -38,8 +41,7 @@
                                                                             <h4><a class="btn btn-light" href="@Url.Action("Logout", "Account")">Çıkış</a></h4> @*<a class="btn btn-link text-light col-md-1" href="/User/GetBlockedUsers">Engellenen Kullanıcılar</a>*@
                                                                                             @if (ViewBag.queryGetCurrentUserInfo != null)
                                                                                             {
-                                                                            <a class="nav-link text-light col-md-2" asp-area="" asp-route-blockCurrentUserId="@ViewBag.queryGetCurrentUserInfo.UserId" asp-controller="User" asp-action="GetBlockedUsers">Engellenen Kullanıcılar</a>}
-                                                                                        }
+                                                                            <a class="nav-link text-light col-md-2" asp-area="" asp-route-blockCurrentUserId="@ViewBag.queryGetCurrentUserInfo.UserId" asp-controller="User" asp-action="GetBlockedUsers">Engellenen Kullanıcılar</a>}}
 
                 <div class="row col-12">
                     <div class="navbar-collapse bg-dark navbar-dark collapse d-sm-inline-flex flex-sm-row-reverse col-12">
@@ -154,6 +156,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
