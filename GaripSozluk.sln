@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GaripSozluk.Data", "GaripSozluk.Data\GaripSozluk.Data.csproj", "{4B73B87E-0765-41DE-B095-A716C15A4C48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GaripSozluk.Data", "GaripSozluk.Data\GaripSozluk.Data.csproj", "{4B73B87E-0765-41DE-B095-A716C15A4C48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GaripSozluk.Common", "GaripSozluk.Common\GaripSozluk.Common.csproj", "{870C4A04-9B8A-4D65-AFE4-FEC5F015437D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GaripSozluk.Common", "GaripSozluk.Common\GaripSozluk.Common.csproj", "{870C4A04-9B8A-4D65-AFE4-FEC5F015437D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GaripSozluk.Business", "GaripSozluk.Business\GaripSozluk.Business.csproj", "{3F5A9AEB-5461-46AB-B0E1-137B95517016}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GaripSozluk.Business", "GaripSozluk.Business\GaripSozluk.Business.csproj", "{3F5A9AEB-5461-46AB-B0E1-137B95517016}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GaripSozluk.WebApp", "GaripSozluk.WebApp\GaripSozluk.WebApp.csproj", "{090B2DDB-C000-40FF-929B-A37E657935E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GaripSozluk.WebApp", "GaripSozluk.WebApp\GaripSozluk.WebApp.csproj", "{090B2DDB-C000-40FF-929B-A37E657935E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{88F3D06B-16E0-4941-BAC9-FB2BEDCF0FF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{090B2DDB-C000-40FF-929B-A37E657935E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{090B2DDB-C000-40FF-929B-A37E657935E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{090B2DDB-C000-40FF-929B-A37E657935E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88F3D06B-16E0-4941-BAC9-FB2BEDCF0FF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88F3D06B-16E0-4941-BAC9-FB2BEDCF0FF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88F3D06B-16E0-4941-BAC9-FB2BEDCF0FF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88F3D06B-16E0-4941-BAC9-FB2BEDCF0FF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

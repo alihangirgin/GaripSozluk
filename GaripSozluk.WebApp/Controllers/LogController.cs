@@ -31,7 +31,7 @@ namespace GaripSozluk.WebApp.Controllers
         {
 
            var log= _logService.GetAll(model);
-            return View(log);
+            return Json(log);
 
         }
 

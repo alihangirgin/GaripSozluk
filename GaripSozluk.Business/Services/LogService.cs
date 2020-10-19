@@ -64,26 +64,27 @@ namespace GaripSozluk.Business.Services
         {
 
             //Filtreleme yapıldığında filtrelemeden önceki liste kaybolduğu için tekrar çağırdım.
-            var model = new LogViewModel();
-            model.LogList = new List<LogRowVM>();
-            var log = _logRepository.GetAll();
-            foreach (var item in log)
-            {
-                var logRowVM = new LogRowVM();
-                logRowVM.TraceIdentifier = item.TraceIdentifier;
-                logRowVM.ResponseStatusCode = item.ResponseStatusCode;
-                logRowVM.RequestMethod = item.RequestMethod;
-                logRowVM.RequestPath = item.RequestPath;
-                logRowVM.UserAgent = item.UserAgent;
-                logRowVM.RoutePath = item.RoutePath;
-                logRowVM.IPAddress = item.IPAddress;
-                logRowVM.CreateDate = item.CreateDate;
-
-                model.LogList.Add(logRowVM);
-
-            }
-
             //var model = new LogViewModel();
+            //model.LogList = new List<LogRowVM>();
+            //var log = _logRepository.GetAll();
+            //foreach (var item in log)
+            //{
+            //    var logRowVM = new LogRowVM();
+            //    logRowVM.TraceIdentifier = item.TraceIdentifier;
+            //    logRowVM.ResponseStatusCode = item.ResponseStatusCode;
+            //    logRowVM.RequestMethod = item.RequestMethod;
+            //    logRowVM.RequestPath = item.RequestPath;
+            //    logRowVM.UserAgent = item.UserAgent;
+            //    logRowVM.RoutePath = item.RoutePath;
+            //    logRowVM.IPAddress = item.IPAddress;
+            //    logRowVM.CreateDate = item.CreateDate;
+
+            //    model.LogList.Add(logRowVM);
+
+            //}
+
+            var model = new LogViewModel();
+
             model.LogFilterList = new List<LogViewModelFilter>();
 
             DateTime? minDate;
