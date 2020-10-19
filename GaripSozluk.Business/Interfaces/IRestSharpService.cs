@@ -14,5 +14,7 @@ namespace GaripSozluk.Business.Interfaces
 
         RestApiSearchVM SearchApi(RestApiSearchVM model);
         RestApiSearchVM SearchPostApi(string itemText);
+
+        List<ApiPost> ApiGetPost();
     }
 }

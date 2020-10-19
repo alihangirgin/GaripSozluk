@@ -130,6 +130,32 @@ namespace GaripSozluk.Business.Services
 
 
 
+
+
+        public List<ApiPost> ApiGetPost()
+        {
+            var returnPost = new List<ApiPost>();
+            var client = new RestClient($"http://localhost:57683/apipost");
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.ExecuteAsync(request).Result;
+
+            if (response.IsSuccessful)
+            {
+                var content = JsonConvert.DeserializeObject<List<ApiPost>>(response.Content);
+                return content;
+            }
+            return returnPost;
+        }
+
+
+
+
+
+
+
+
+
+
     }
 }
 

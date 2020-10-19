@@ -1,0 +1,33 @@
+﻿@model List<ApiPost>
+@{
+    ViewData["Title"] = "Post Getirme";
+}
+
+<h1>Post Getirme</h1>
+
+<table class="table" id="table_id">
+    <thead>
+        <tr>
+            <th>Başlık</th>
+            <th>Kullanıcı Id</th>
+            <th>Tıklanma Sayısı</th>
+            <th>Kategori Id</th>
+        </tr>
+    </thead>
+    <tbody id="itemGrid">
+        @if(Model !=null)
+        {
+            @foreach (var item in Model)
+             {
+                <tr>
+                    <td>@item.Title</td>
+                    <td>@item.UserId</td>
+                    <td>@item.ClickCount</td>
+                    <td>@item.CategoryId</td>
+                 </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
