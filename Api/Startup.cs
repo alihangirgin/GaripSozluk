@@ -91,6 +91,12 @@ namespace Api
 
             services.AddControllers();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MovieStore Service", Version = "v1" });
+            });
+
+
             //services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
@@ -105,6 +111,13 @@ namespace Api
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSwagger()
+              .UseSwaggerUI(c =>
+              {
+                  c.SwaggerEndpoint($"/swagger/v1/swagger.json", "MovieStore Service V1");
+              });
+
 
             app.UseEndpoints(endpoints =>
             {

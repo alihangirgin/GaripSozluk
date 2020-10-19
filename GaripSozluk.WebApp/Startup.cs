@@ -93,7 +93,9 @@ namespace GaripSozluk.WebApp
             });
 
 
-            services.AddControllersWithViews().AddRazorRuntimeCompilation(); 
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -118,6 +120,7 @@ namespace GaripSozluk.WebApp
             app.UseAuthorization();
 
             app.UseMiddleware<ExecutionTimeMiddleware>();
+
 
             app.UseEndpoints(endpoints =>
             {
