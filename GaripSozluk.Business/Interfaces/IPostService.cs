@@ -23,6 +23,9 @@ namespace GaripSozluk.Business.Interfaces
 
         void AddPostFromArrayBook(string[] stringArray);
 
+        void AddLogPosts();
+        void AddLogPostsFilter();
+
         int GetRandomId();
 
     }

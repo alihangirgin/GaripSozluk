@@ -16,5 +16,10 @@ namespace GaripSozluk.Business.Interfaces
 
         LogViewModel GetAll(LogViewModel detailedSearch);
 
+
+        LogViewModel GetAllByDate(DateTime date);
+        LogViewModel GetAllByDateCountBest(DateTime date);
+
+
     }
 }

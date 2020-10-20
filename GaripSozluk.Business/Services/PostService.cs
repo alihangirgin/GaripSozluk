@@ -19,13 +19,15 @@ namespace GaripSozluk.Business.Services
         private readonly IEntryRatingService _entryRatingService;
         private readonly IBlockedUserService _blockedUserService;
         private readonly IHttpContextAccessor _httpContext;
-        public PostService(IPostRepository postRepository, IEntryRepository entryRepository, IEntryRatingService entryRatingService, IHttpContextAccessor httpContext, IBlockedUserService blockedUserService)
+        private readonly ILogService _logService;
+        public PostService(IPostRepository postRepository, IEntryRepository entryRepository, IEntryRatingService entryRatingService, IHttpContextAccessor httpContext, IBlockedUserService blockedUserService, ILogService logService)
         {
             _postRepository = postRepository;
             _entryRepository = entryRepository;
             _entryRatingService = entryRatingService;
             _httpContext = httpContext;
             _blockedUserService = blockedUserService;
+            _logService = logService;
         }
 
 
@@ -76,7 +78,7 @@ namespace GaripSozluk.Business.Services
             foreach (var item in stringArray)
             {
                 var post = new Post();
-                if(item.EndsWith("(Kitap)"))
+                if (item.EndsWith("(Kitap)"))
                 {
                     post.CategoryId = 6;
                 }
@@ -167,8 +169,8 @@ namespace GaripSozluk.Business.Services
                 row.CreateDate = item.CreateDate;
                 row.Entries = item.Entries.Where(x => !blockedUserIdList.Contains(x.UserId)).ToList();
                 List.Add(row);
-                
-                
+
+
             }
             return List;
         }
@@ -241,18 +243,18 @@ namespace GaripSozluk.Business.Services
 
             var user = _httpContext.HttpContext.User;
             int? UserId = null;
-            List<int> blockedUserIdList=new List<int>();
+            List<int> blockedUserIdList = new List<int>();
 
-            if(user.Claims.Count() >0)
+            if (user.Claims.Count() > 0)
             {
-                UserId=int.Parse(user.Claims.ToList().First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+                UserId = int.Parse(user.Claims.ToList().First(x => x.Type == ClaimTypes.NameIdentifier).Value);
                 foreach (var item in _blockedUserService.GetAll(UserId.Value))
                 {
-                    blockedUserIdList.Add(item.BlockedUserId);  
+                    blockedUserIdList.Add(item.BlockedUserId);
                 }
-             
+
             }
-            
+
             var itemSize = 5;
             var postListVM = new PostListVM();
             var getPost = _postRepository.Get(x => x.Id == id);
@@ -273,7 +275,7 @@ namespace GaripSozluk.Business.Services
                 //postListVM.numberOfEntries = numberOfEntries;
 
                 var postEntries = _entryRepository.GetAll(x => x.PostId == getPost.Id).Include("User")
-                    .Where(x=> !blockedUserIdList.Contains(x.UserId))
+                    .Where(x => !blockedUserIdList.Contains(x.UserId))
                     .Skip((currentPage - 1) * itemSize)
                     .Take(itemSize)
                     .ToList();
@@ -302,6 +304,117 @@ namespace GaripSozluk.Business.Services
         }
 
 
+
+
+
+        public void AddLogPosts()
+        {
+            var logPosts = _logService.GetAllByDate(DateTime.Now.AddDays(-1));
+            var post = new Post();
+
+
+            post.Title = DateTime.Now.AddDays(-1).ToShortDateString() + " günü log listesi(log)";
+            post.CreateDate = DateTime.Now;
+            post.UserId = 1;
+            post.CategoryId = 8;
+            post.ClickCount = 0;
+
+
+            var entity = _postRepository.Add(post);
+
+            try
+            {
+                _postRepository.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = ex.Message;
+                throw;
+            }
+            entity.Entries = new List<Entry>();
+            foreach (var item in logPosts.LogList)
+            {
+                var entry = new Entry();
+                entry.PostId = entity.Id;
+                entry.UserId = 1;
+                entry.CreateDate = DateTime.Now;
+                entry.Content = item.CreateDate + " Tarihinde " + item.TraceIdentifier + " Trace Identiferlı " + item.ResponseStatusCode + " Cevap Statü Kodlu " + item.RequestMethod + " İstek Methodlu " + item.RequestPath + "İstek Yollu " + item.UserAgent + " Tarayıcıların Desteklediği " + item.RoutePath + " Rota Yollu " + item.IPAddress + " IP Adresli bir Logum ben " ;
+
+                entity.Entries.Add(entry);
+            }
+
+
+            try
+            {
+                _postRepository.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = ex.Message;
+                throw;
+            }
+
+        }
+
+
+
+
+
+
+
+
+        public void AddLogPostsFilter()
+        {
+            var logPosts = _logService.GetAllByDateCountBest(DateTime.Now.AddDays(-1));
+            var post = new Post();
+
+
+            post.Title = DateTime.Now.AddDays(-1).ToShortDateString() + " gününde en fazla istek yapılan adresle(log-request)";
+            post.CreateDate = DateTime.Now;
+            post.UserId = 1;
+            post.CategoryId = 8;
+            post.ClickCount = 0;
+
+
+            var entity = _postRepository.Add(post);
+
+            try
+            {
+                _postRepository.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = ex.Message;
+                throw;
+            }
+            entity.Entries = new List<Entry>();
+            foreach (var item in logPosts.LogFilterList)
+            {
+                var entry = new Entry();
+                entry.PostId = entity.Id;
+                entry.UserId = 1;
+                entry.CreateDate = DateTime.Now;
+                entry.Content = "/Log/List adresine yapılan istek gün içerisinde " +item.Count + " defa çağrılmıştır.";
+
+                entity.Entries.Add(entry);
+            }
+
+
+            try
+            {
+                _postRepository.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = ex.Message;
+                throw;
+            }
+
+        }
 
 
         //public PostViewModel UpdatePost(PostViewModel model)

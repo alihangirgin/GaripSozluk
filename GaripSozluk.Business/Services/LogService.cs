@@ -134,5 +134,51 @@ namespace GaripSozluk.Business.Services
         }
 
 
+        public LogViewModel GetAllByDate(DateTime date)
+        {
+           
+            var model = new LogViewModel();
+            model.LogList = new List<LogRowVM>();
+            var log = _logRepository.GetAll().Where(x => x.CreateDate.Date == date.Date).ToList();
+            foreach (var item in log)
+            {
+                var logRowVM = new LogRowVM();
+                logRowVM.TraceIdentifier = item.TraceIdentifier;
+                logRowVM.ResponseStatusCode = item.ResponseStatusCode;
+                logRowVM.RequestMethod = item.RequestMethod;
+                logRowVM.RequestPath = item.RequestPath;
+                logRowVM.UserAgent = item.UserAgent;
+                logRowVM.RoutePath = item.RoutePath;
+                logRowVM.IPAddress = item.IPAddress;
+                logRowVM.CreateDate = item.CreateDate;
+
+                model.LogList.Add(logRowVM);
+
+            }
+
+            return model;
+        }
+
+
+
+        public LogViewModel GetAllByDateCountBest(DateTime date)
+        {
+            var model = new LogViewModel();
+            model.LogFilterList = new List<LogViewModelFilter>();
+            var query = _logRepository.GetAll().Where(x => x.CreateDate.Date == date.Date).ToList();
+            var filterQuery = query.ToList().GroupBy(x => x.RequestPath).OrderByDescending(x => x.Count());
+            foreach (var item in filterQuery)
+            {
+                var logRowVM = new LogViewModelFilter();
+                logRowVM.RequestPath = item.Key;
+                logRowVM.Count = item.Count();
+                model.LogFilterList.Add(logRowVM);
+
+            }
+
+            return model;
+        }
+
+
     }
 }
