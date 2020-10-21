@@ -1,0 +1,165 @@
+﻿@model GaripSozluk.Common.ViewModels.LogViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<h1>Log Listesi</h1>
+
+<table class="table" id="table_id">
+    <thead>
+        <tr>
+            <th>Eklenme Tarihi</th>
+            <th>TraceIdentifier</th>
+            <th>ResponseStatusCode</th>
+            <th>RequestMethod</th>
+            <th>RequestPath</th>
+            <th>UserAgent</th>
+            <th>RoutePath</th>
+            <th>IPAddress</th>
+        </tr>
+    </thead>
+    <tbody id="itemGrid">
+        @if(Model.LogList !=null)
+        {
+            @foreach (var item in Model.LogList)
+             {
+                <tr>
+                    <td>@item.CreateDate</td>
+                    <td>@item.TraceIdentifier</td>
+                    <td>@item.ResponseStatusCode</td>
+                    <td>@item.RequestMethod</td>
+                    <td>@item.RequestPath</td>
+                    <td>@item.UserAgent</td>
+                    <td>@item.RoutePath</td>
+                    <td>@item.IPAddress</td>
+                 </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index" asp-controller="Log" method="post" id="formId">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DateOne" class="control-label"></label>
+                <input asp-for="DateOne" class="form-control" />
+                <span asp-validation-for="DateOne" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateTwo" class="control-label"></label>
+                <input asp-for="DateTwo" class="form-control" />
+                <span asp-validation-for="DateTwo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <button type="button" onclick="requestLogList()" class="btn btn-primary">En çok istek yapılan 10 kaydı getir.</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+<table class="table" id="table_id">
+    <thead>
+        <tr>
+            <th>RequestPath</th>
+            <th>Count</th>
+        </tr>
+    </thead>
+    <tbody id="itemFilterGrid">
+        @if(Model.LogFilterList !=null)
+        {
+            @foreach (var item in Model.LogFilterList)
+             {
+                <tr>
+                    <td>@item.RequestPath</td>
+                    <td>@item.Count</td>
+                 </tr>
+            }
+        }
+    </tbody >
+</table>
+
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+ 
+        $(document).ready(function () {
+            $('#table_id').DataTable();
+        });
+
+
+
+        //$(document).ready(function () {
+
+        //    requestLogList();
+
+        //});
+        function renderTable(data) {
+            var itemGrid = $("#itemFilterGrid");
+            itemGrid.html("");
+            $.each(data, function (indexInArray, valueOfElement) {
+                var tr = '<tr item-id="' + valueOfElement.id + '">' +
+                    '<td>' +
+                    '' + valueOfElement.requestPath + '' +
+                    '</td>' +
+                    '<td>' +
+                    '' + valueOfElement.count + '' +
+                    '</td>' +
+                    //'<td>' +
+                    //'' + valueOfElement.ResponseStatusCode + '' +
+                    //'</td>' +
+                    //'<td> ' +
+                    //'' + valueOfElement.RequestMethod + ' ' +
+                    //'</td>' +
+                    //'<td> ' +
+                    //'' + valueOfElement.RequestPath + ' ' +
+                    //'</td>' +
+                    //'<td> ' +
+                    //'' + valueOfElement.UserAgent + '' +
+                    //'</td>' +
+                    //'<td> ' +
+                    //'' + valueOfElement.RoutePath + ' ' +
+                    //'</td>' +
+                    //'<td> ' +
+                    //'' + valueOfElement.IPAddress + ' ' +
+                    //'</td>' +
+                    '</tr>';
+                itemGrid.append(tr);
+            });
+        };
+
+        function requestLogList() {
+            var formArray = $("#formId").serializeArray();
+            var model = { dateOne: formArray[0].value, dateTwo: formArray[1].value }
+            //formArray.push({ /*???????*/ });
+            $.ajax({
+                type: "POST",
+                url: "/log/index",
+                data: model,
+                dataType: "json",
+                success: function (response) {
+                    debugger;
+                    renderTable(response.logFilterList);
+                },
+                error: function () {
+                    debugger;
+                    alert("Bir Hata Oluştu!");
+                }
+            });
+
+        };
+
+
+    </script>
+}
