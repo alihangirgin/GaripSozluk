@@ -13,6 +13,8 @@ namespace GaripSozluk.Data.Interfaces
         IQueryable<Post> GetAllByCategoryId(int id);
         IQueryable<Post> GetAllWithEntries(int id);
 
+
        Task AddLogPosts(LogViewModel model);
+        Task<int> AddPostWithEntryRepo(PostViewModel model);
     }
 }

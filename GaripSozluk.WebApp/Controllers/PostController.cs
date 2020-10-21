@@ -45,11 +45,11 @@ namespace GaripSozluk.WebApp.Controllers
 
         public IActionResult Random()
         {
-            var randomId =_postService.GetRandomId();
-            return Redirect(Url.Action("Index", "Home", new { Id=randomId }));
+            var randomId = _postService.GetRandomId();
+            return Redirect(Url.Action("Index", "Home", new { Id = randomId }));
         }
 
-       
+
 
         [HttpGet]
         public IActionResult AddPost(int addPostId)
@@ -65,30 +65,27 @@ namespace GaripSozluk.WebApp.Controllers
         [HttpPost]
         public IActionResult AddPost(PostViewModel model)
         {
-            var UserId=0;
+            var UserId = 0;
             var user = HttpContext.User;
             var dbUser = _userManager.GetUserAsync(user).Result;
 
             UserId = dbUser.Id;
 
-     
-
-
             if (ModelState.IsValid)
             {
-                
+
                 model.UserId = UserId;
-                var entity = _postService.AddPost(model);
-                if (entity.Id > 0)
+                var postId = _postService.AddPostsWithEntry(model);
+                if (postId > 0)
                 {
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
+                    return RedirectToAction(nameof(HomeController.Index), "Home", new { id = postId });
                 }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Kayıt başarısız");
                 }
             }
-           
+
             return View();
         }
 
@@ -120,7 +117,7 @@ namespace GaripSozluk.WebApp.Controllers
         //public IActionResult DeletePost(int id)
         //{
         //    var model = _postService.DeletePost(id);
-            
+
         //    return View(postViewModel);
         //}
 

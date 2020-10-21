@@ -379,22 +379,27 @@ namespace GaripSozluk.Business.Services
             //{
 
             //    throw;
-            //}
+            //}    
 
- 
+        }
 
-        
 
+        public int AddPostsWithEntry(PostViewModel model)
+        {
+            var isAddedBefore = _postRepository.Get(x => x.Title == model.Title);
+            if(isAddedBefore ==null)
+            {
+                return _postRepository.AddPostWithEntryRepo(model).Result;
+                
+            }
+            return isAddedBefore.Id;
         }
 
 
 
 
 
-
-
-
-        public void AddLogPostsFilter()
+            public void AddLogPostsFilter()
         {
             var logPosts = _logService.GetAllByDateCountBest(DateTime.Now.AddDays(-1));
             var post = new Post();

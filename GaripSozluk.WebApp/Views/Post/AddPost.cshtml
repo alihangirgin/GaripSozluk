@@ -3,8 +3,8 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AddPost" asp-controller="Post"  method="post">
-            <input type="hidden" name="addPostId" value="@ViewBag.catagoryIdSelectItem"/> 
+        <form asp-action="AddPost" asp-controller="Post" method="post">
+            <input type="hidden" name="addPostId" value="@ViewBag.catagoryIdSelectItem" />
             <h4>Başlık Ekle.</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
@@ -17,6 +17,11 @@
             <div class="form-group">
                 <label asp-for="Title"></label>
                 <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comment">Yorum</label>
+                <textarea asp-for="Comment" class="form-control" ></textarea>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-default">Kaydet</button>

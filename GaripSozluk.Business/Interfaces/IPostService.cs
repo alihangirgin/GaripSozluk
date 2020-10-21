@@ -25,7 +25,7 @@ namespace GaripSozluk.Business.Interfaces
 
         void AddLogPosts();
         void AddLogPostsFilter();
-
+        int AddPostsWithEntry(PostViewModel model);
         int GetRandomId();
 
     }
