@@ -225,12 +225,36 @@ namespace GaripSozluk.Business.Services
             if (detailedSearch.SortType == 1)
             {
                 query = query.OrderByDescending(x => x.CreateDate);
-                detailedSearch.DetailedSearchPosts = query.ToList();
+                detailedSearch.DetailedSearchPosts = new List<PostViewModel>();
+                foreach (var item in query.ToList())
+                {
+                    var searchRow = new PostViewModel();
+                    searchRow.Title = item.Title;
+                    searchRow.UserId = item.UserId;
+                    searchRow.ClickCount = item.ClickCount;
+                    searchRow.CategoryId = item.CategoryId;
+                    searchRow.Id = item.Id;
+                    detailedSearch.DetailedSearchPosts.Add(searchRow);
+                }
+
+                //detailedSearch.DetailedSearchPosts = query.ToList();
             }
             if (detailedSearch.SortType == 2)
             {
                 query = query.OrderBy(x => x.CreateDate);
-                detailedSearch.DetailedSearchPosts = query.ToList();
+                detailedSearch.DetailedSearchPosts = new List<PostViewModel>();
+                foreach (var item in query.ToList())
+                {
+                    var searchRow = new PostViewModel();
+                    searchRow.Title = item.Title;
+                    searchRow.UserId = item.UserId;
+                    searchRow.ClickCount = item.ClickCount;
+                    searchRow.CategoryId = item.CategoryId;
+                    searchRow.Id = item.Id;
+                    detailedSearch.DetailedSearchPosts.Add(searchRow);
+                }
+
+                //detailedSearch.DetailedSearchPosts = query.ToList();
             }
 
             return detailedSearch;
@@ -309,52 +333,57 @@ namespace GaripSozluk.Business.Services
 
         public void AddLogPosts()
         {
-            var logPosts = _logService.GetAllByDate(DateTime.Now.AddDays(-1));
-            var post = new Post();
+
+             _postRepository.AddLogPosts(_logService.GetAllByDate(DateTime.Now.AddDays(-1))).ConfigureAwait(true);
 
 
-            post.Title = DateTime.Now.AddDays(-1).ToShortDateString() + " günü log listesi(log)";
-            post.CreateDate = DateTime.Now;
-            post.UserId = 1;
-            post.CategoryId = 8;
-            post.ClickCount = 0;
+            //await using var transaction = await _context.Database.BeginTransactionAsync();
+            //try
+            //{
+            //    var logPosts = _logService.GetAllByDate(DateTime.Now.AddDays(-1));
+            //    var post = new Post();
 
 
-            var entity = _postRepository.Add(post);
-
-            try
-            {
-                _postRepository.SaveChanges();
-
-            }
-            catch (Exception ex)
-            {
-                var errorMessage = ex.Message;
-                throw;
-            }
-            entity.Entries = new List<Entry>();
-            foreach (var item in logPosts.LogList)
-            {
-                var entry = new Entry();
-                entry.PostId = entity.Id;
-                entry.UserId = 1;
-                entry.CreateDate = DateTime.Now;
-                entry.Content = item.CreateDate + " Tarihinde " + item.TraceIdentifier + " Trace Identiferlı " + item.ResponseStatusCode + " Cevap Statü Kodlu " + item.RequestMethod + " İstek Methodlu " + item.RequestPath + "İstek Yollu " + item.UserAgent + " Tarayıcıların Desteklediği " + item.RoutePath + " Rota Yollu " + item.IPAddress + " IP Adresli bir Logum ben " ;
-
-                entity.Entries.Add(entry);
-            }
+            //    post.Title = DateTime.Now.AddDays(-1).ToShortDateString() + " günü log listesi(log)";
+            //    post.CreateDate = DateTime.Now;
+            //    post.UserId = 1;
+            //    post.CategoryId = 8;
+            //    post.ClickCount = 0;
 
 
-            try
-            {
-                _postRepository.SaveChanges();
+            //    var entity = _postRepository.Add(post);
 
-            }
-            catch (Exception ex)
-            {
-                var errorMessage = ex.Message;
-                throw;
-            }
+
+            //    _postRepository.SaveChanges();
+
+
+
+            //    entity.Entries = new List<Entry>();
+            //    foreach (var item in logPosts.LogList)
+            //    {
+            //        var entry = new Entry();
+            //        entry.PostId = entity.Id;
+            //        entry.UserId = 1;
+            //        entry.CreateDate = DateTime.Now;
+            //        entry.Content = item.CreateDate + " Tarihinde " + item.TraceIdentifier + " Trace Identiferlı " + item.ResponseStatusCode + " Cevap Statü Kodlu " + item.RequestMethod + " İstek Methodlu " + item.RequestPath + "İstek Yollu " + item.UserAgent + " Tarayıcıların Desteklediği " + item.RoutePath + " Rota Yollu " + item.IPAddress + " IP Adresli bir Logum ben ";
+
+            //        entity.Entries.Add(entry);
+            //    }
+
+
+            //    _postRepository.SaveChanges();
+
+            //    await transaction.CommitAsync();
+            //}
+            //catch (Exception)
+            //{
+
+            //    throw;
+            //}
+
+ 
+
+        
 
         }
 
@@ -397,7 +426,7 @@ namespace GaripSozluk.Business.Services
                 entry.PostId = entity.Id;
                 entry.UserId = 1;
                 entry.CreateDate = DateTime.Now;
-                entry.Content = "/Log/List adresine yapılan istek gün içerisinde " +item.Count + " defa çağrılmıştır.";
+                entry.Content = item.RequestPath + " adresine yapılan istek gün içerisinde " +item.Count + " defa çağrılmıştır.";
 
                 entity.Entries.Add(entry);
             }

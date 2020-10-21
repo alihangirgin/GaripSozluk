@@ -13,6 +13,7 @@ namespace GaripSozluk.Common.ViewModels
 
         public int UserId { get; set; }
 
+        public int CategoryId { get; set; }
         public int ClickCount { get; set; }
 
     }

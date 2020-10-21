@@ -1,5 +1,4 @@
-﻿using GaripSozluk.Data.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,6 +11,6 @@ namespace GaripSozluk.Common.ViewModels
         public DateTime? DateTwo { get; set; }
         public int SortType { get; set; }
 
-        public List<Post> DetailedSearchPosts {get; set;}
+        public List<PostViewModel> DetailedSearchPosts {get; set;}
     }
 }

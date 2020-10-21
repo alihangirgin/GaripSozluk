@@ -71,7 +71,7 @@ namespace GaripSozluk.WebApp.Controllers
 
             UserId = dbUser.Id;
 
-
+     
 
 
             if (ModelState.IsValid)
