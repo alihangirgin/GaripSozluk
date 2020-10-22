@@ -386,6 +386,7 @@ namespace GaripSozluk.Business.Services
 
         public int AddPostsWithEntry(PostViewModel model)
         {
+            
             var isAddedBefore = _postRepository.Get(x => x.Title == model.Title);
             if(isAddedBefore ==null)
             {

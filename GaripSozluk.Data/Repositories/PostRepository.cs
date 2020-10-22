@@ -98,7 +98,7 @@ namespace GaripSozluk.Data.Repositories
 
         public async Task<int> AddPostWithEntryRepo(PostViewModel model)
         {
-            await using var transaction = await _context.Database.BeginTransactionAsync();
+            await using var transaction = await _context.Database.  BeginTransactionAsync();
 
             ////using(var dbTransaction= _context.Database.BeginTransaction())
             ////{

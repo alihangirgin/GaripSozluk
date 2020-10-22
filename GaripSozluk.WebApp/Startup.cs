@@ -7,9 +7,12 @@ using GaripSozluk.Business.Interfaces;
 using GaripSozluk.Business.Services;
 using GaripSozluk.Data;
 using GaripSozluk.Data.Domain;
+using GaripSozluk.Data.HealthChecks;
 using GaripSozluk.Data.Interfaces;
 using GaripSozluk.Data.Repositories;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -17,6 +20,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using MovieStore.WebApp.Extensions;
 
@@ -55,7 +59,7 @@ namespace GaripSozluk.WebApp
             services.AddScoped<IEntryRatingRepository, EntryRatingRepository>();
             services.AddScoped<IBlockedUserRepository, BlockedUserRepository>();
             services.AddScoped<ILogRepository, LogRepository>();
-                
+
             services.AddHttpContextAccessor();
 
             //services.AddTransient<ClaimsPrincipal>(s => s.GetService<IHttpContextAccessor>().HttpContext.User);
@@ -93,6 +97,24 @@ namespace GaripSozluk.WebApp
             });
 
 
+            services.AddGaripSozlukHealthChecks();
+
+            services.AddHealthChecks()
+                 //.AddCheck<GaripSozlukDbContextHealthCheck>("HealthCheckExample")
+                //.AddCheck<GaripSozlukDbContextHealthCheck>("GaripSozlukDbContextCheck")
+                .AddSqlServer(connectionString: Configuration.GetConnectionString("AppDatabase"),
+                  healthQuery: "SELECT 1;",
+                  name: "Sql Server",
+                  failureStatus: HealthStatus.Degraded);
+
+
+            services.AddHealthChecksUI(setupSettings: setup =>
+            {
+                setup.AddHealthCheckEndpoint("Basic healthcheck", "https://localhost:44377/healthcheck");
+                
+            }).AddInMemoryStorage(); 
+
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 
@@ -121,13 +143,28 @@ namespace GaripSozluk.WebApp
 
             app.UseMiddleware<ExecutionTimeMiddleware>();
 
+            app.UseHealthChecks("/healthcheck", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+            app.UseHealthChecksUI();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
+                     //pattern: "{controller=Home}/{action=Index}/{category?}/{header?}");
+
+            //endpoints.MapHealthChecks("/healthcheck", new HealthCheckOptions()
+            //{
+            //    Predicate = _ => true,
+            //    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            //});
+            //endpoints.MapHealthChecksUI();
+
+        });
         }
     }
 }
