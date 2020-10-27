@@ -7,6 +7,7 @@ namespace GaripSozluk.Data.Domain
     public class PostCategory : BaseEntity
     {
         public string Title { get; set; }
+        public string NormalizedTitle { get; set; }
         public ICollection<Post> Posts { get; set; }
     }
 }

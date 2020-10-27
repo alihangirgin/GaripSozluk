@@ -46,17 +46,17 @@ namespace GaripSozluk.WebApp.Controllers
         public IActionResult Random()
         {
             var randomId = _postService.GetRandomId();
-            return Redirect(Url.Action("Index", "Home", new { Id = randomId }));
+            return Redirect(Url.Action("Index", "Home", new { category = "Kategori1", post = randomId }));
         }
 
 
 
         [HttpGet]
-        public IActionResult AddPost(int addPostId)
+        public IActionResult AddPost(string category)
         {
 
-            ViewBag.queryCategoryTwo = _postCategoryService.selectListItem(addPostId);
-            ViewBag.catagoryIdSelectItem = addPostId;
+            ViewBag.queryCategoryTwo = _postCategoryService.selectListItem(category);
+            ViewBag.catagoryIdSelectItem = category;
 
 
             return View();
@@ -78,7 +78,7 @@ namespace GaripSozluk.WebApp.Controllers
                 var postId = _postService.AddPostsWithEntry(model);
                 if (postId > 0)
                 {
-                    return RedirectToAction(nameof(HomeController.Index), "Home", new { id = postId });
+                    return RedirectToAction(nameof(HomeController.Index), "Home", new { category="Kategori1", post=postId });
                 }
                 else
                 {

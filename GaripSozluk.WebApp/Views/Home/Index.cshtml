@@ -15,11 +15,16 @@
                         <p style="margin-right:auto; text-align:left">@item.UserName</p>
                         <p style="margin-right:auto; text-align:left">@item.CreateDate</p>
                         @*<h4><a class="btn btn-success" href="@Url.Action("Logout", "Account")">Beğen</a></h4>
-                            <h4><a class="btn btn-danger" href="@Url.Action("Logout", "Account")">Beğenme</a></h4>*@
-                        <a class="nav-link text-success col-md-2" asp-area="" asp-route-entryLikeId="@item.EntryId" asp-route-postId="@ViewBag.querySelectedPost.Id" asp-controller="Entry" asp-action="Like">Beğen @item.LikeCount</a>
-                        <a class="nav-link text-danger col-md-2" asp-area="" asp-route-entryDislikeId="@item.EntryId" asp-route-postId="@ViewBag.querySelectedPost.Id" asp-controller="Entry" asp-action="Dislike">Beğenme @item.DislikeCount</a>
-                        <a class="nav-link text-dark col-md-2" asp-area="" asp-route-blockUserId="@item.UserId" asp-route-postId="@ViewBag.querySelectedPost.Id" asp-controller="User" asp-action="Block">Engelle</a>
-                        @*<p style="margin-right:auto; text-align:left">@item.CreateDate</p>*@
+        <h4><a class="btn btn-danger" href="@Url.Action("Logout", "Account")">Beğenme</a></h4>*@
+                        @*@if (item.PostId > 0)
+                        {*@
+                            <a class="nav-link text-success col-md-2" asp-area="" asp-route-entryLikeId="@item.EntryId" asp-route-postId="@ViewBag.querySelectedPost.Id" asp-controller="Entry" asp-action="Like">Beğen @item.LikeCount</a>
+                            <a class="nav-link text-danger col-md-2" asp-area="" asp-route-entryDislikeId="@item.EntryId" asp-route-postId="@ViewBag.querySelectedPost.Id" asp-controller="Entry" asp-action="Dislike">Beğenme @item.DislikeCount</a>
+                         @*}*@
+                        @if (item.UserId > 0)
+                        {
+                            <a class="nav-link text-dark col-md-2" asp-area="" asp-route-blockUserId="@item.UserId" asp-route-postId="@ViewBag.querySelectedPost.Id" asp-controller="User" asp-action="Block">Engelle</a>
+                        } @*<p style="margin-right:auto; text-align:left">@item.CreateDate</p>*@
                     </div>
 
                 </div>} } @*@if (ViewBag.querySelectedPost != null){*@ @*<a class="nav-link" href="#">@ViewBag.querySelectedPost.Title</a>*@ @*<h1 class="display-3">@ViewBag.querySelectedPost.Title</h1>*@ @*<h1 class="display-4">@ViewBag.querySelectedPost.ClickCount  Görüntüleme</h1>}*@

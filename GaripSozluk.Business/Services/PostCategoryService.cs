@@ -24,14 +24,52 @@ namespace GaripSozluk.Business.Services
             _httpContext = httpContext;
         }
 
+        public int GetOrCreate(string title)
+        {
+            var get = _postCategoryRepository.Get(x => x.Title == title);
+            if(get!=null)
+            {
+                return get.Id;
+            }
+            else
+            {
+                string normalizedString =title;
+                char[] oldValue = new char[] { 'ö', 'Ö', 'ü', 'Ü', 'ç', 'Ç', 'İ', 'ı', 'Ğ', 'ğ', 'Ş', 'ş', ' ' };
+                char[] newValue = new char[] { 'o', 'O', 'u', 'U', 'c', 'C', 'I', 'i', 'G', 'g', 'S', 's', '-' };
+                for (int i = 0; i < oldValue.Length; i++)
+                {
+                    normalizedString = normalizedString.Replace(oldValue[i], newValue[i]);
+                }
+
+                var create = new PostCategory();
+                create.Title = title;
+                create.NormalizedTitle = normalizedString;
+                create.CreateDate = DateTime.Now;
+                _postCategoryRepository.Add(create);
+                _postCategoryRepository.SaveChanges();
+
+                return create.Id;
+            }
+        }
+
         public PostCategoryViewModel AddPostCategory(PostCategoryViewModel model)
         {
+
+            string normalizedString = model.Title;
+            char[] oldValue = new char[] { 'ö', 'Ö', 'ü', 'Ü', 'ç', 'Ç', 'İ', 'ı', 'Ğ', 'ğ', 'Ş', 'ş', ' ' };
+            char[] newValue = new char[] { 'o', 'O', 'u', 'U', 'c', 'C', 'I', 'i', 'G', 'g', 'S', 's', '-' };
+            for (int i = 0; i < oldValue.Length; i++)
+            {
+                normalizedString = normalizedString.Replace(oldValue[i], newValue[i]);
+            }
+
+
             var postCategory = new PostCategory()
             {
-                Title = model.Title
+                Title = model.Title,
+                NormalizedTitle = normalizedString
             };
             postCategory.CreateDate = DateTime.Now;
-            postCategory.UpdateDate = DateTime.Now;
             //postCategory.UserId = 1;
             //postCategory.CategoryId = 1;
             //postCategory.ClickCount = 1;
@@ -110,14 +148,14 @@ namespace GaripSozluk.Business.Services
         }
 
 
-        public List<SelectListItem> selectListItem(int id)
+        public List<SelectListItem> selectListItem(string normalized)
         {
             var newListRow = new List<SelectListItem>();
             var categories = _postCategoryRepository.GetAll();
             foreach (var item in categories)
             {
                 var newList = new SelectListItem();
-                if(item.Id==id)
+                if(item.NormalizedTitle==normalized)
                 {
                     newList.Selected = true;
                 }

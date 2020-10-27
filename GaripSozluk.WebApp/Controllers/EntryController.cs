@@ -94,7 +94,7 @@ namespace GaripSozluk.WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddEntryAsync(EntryViewModel model, int addEntryId)
+        public IActionResult AddEntryAsync (EntryViewModel model, int addEntryId)
         {
             var UserId = 0;
             var user = HttpContext.User;

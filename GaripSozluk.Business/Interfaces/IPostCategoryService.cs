@@ -17,7 +17,9 @@ namespace GaripSozluk.Business.Interfaces
         PostCategoryViewModel UpdatePostCategory(PostCategoryViewModel model);
         //PostViewModel UpdatePost(int id);
 
-        List<SelectListItem> selectListItem(int id);
+        int GetOrCreate(string title);
+
+        List<SelectListItem> selectListItem(string normalized);
 
     }
 }

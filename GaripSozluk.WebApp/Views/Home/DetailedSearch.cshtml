@@ -38,7 +38,7 @@
 
             </div>
             <div class="form-group">
-                <button type="submit"class="btn btn-primary">Mükemmel Ara</button>
+                <button type="submit" class="btn btn-primary">Mükemmel Ara</button>
             </div>
         </form>
     </div>
@@ -48,8 +48,10 @@
 {
     @foreach (var item in ViewBag.queryDetailedSelect.DetailedSearchPosts)
     {
-        <a class="btn btn-light d-flex justify-content-between align-items-center" asp-route-postCategoryId="@ViewBag.postCategoryId" asp-controller="home" asp-action="index" asp-route-Id="@item.Id">
-            @item.Title
-        </a>
+@*<a class="btn btn-light d-flex justify-content-between align-items-center" asp-route-postCategoryId="@ViewBag.postCategoryId" asp-controller="home" asp-action="index" asp-route-Id="@item.Id">*@
+    <a class="btn btn-light d-flex justify-content-between align-items-center" href="/yazi/@item.NormalizedTitle">
+        @item.Title
+    </a>
     }
-}
+    }
+    

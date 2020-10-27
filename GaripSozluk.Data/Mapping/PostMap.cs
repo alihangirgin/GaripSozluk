@@ -17,6 +17,10 @@ namespace GaripSozluk.Data.Mapping
                 .HasMaxLength(100)
                 .IsRequired();
 
+            builder.Property(x => x.NormalizedTitle)
+                .HasMaxLength(100)
+                .IsRequired();
+
             builder.Property(x => x.ClickCount)
                 .IsRequired();
 

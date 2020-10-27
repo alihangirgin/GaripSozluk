@@ -32,18 +32,45 @@ namespace GaripSozluk.WebApp.Controllers
             _restSharpService = restSharpService;
         }
 
-        public IActionResult Index(int postCategoryId=1, int Id=2 ,int selectPageNumber=1, SearchViewModel searchModel = null)
+        public IActionResult Index(string post="fasulye",int selectPageNumber=1, SearchViewModel searchModel = null)
         {
-            ViewBag.query = _postService.GetAllCount(postCategoryId); //kategori id'ye göre bütün postları ve bütün entryleri getirir
-          
-            ViewBag.querySelectedPost = _postService.Get(x => x.Id == Id);//postid ye göre tek post getirir
+
+            var category = _postService.GetCategoryByPostString(post);           
+
+            ViewBag.query = _postService.GetAllCount(category); //kategori id'ye göre bütün postları ve bütün entryleri getirir
+
+            ViewBag.querySelectedPost = _postService.Get(x => x.NormalizedTitle == post);//postid ye göre tek post getirir
             ViewBag.queryCategory = _postCategoryService.GetAll();  //bütün kategorileri getirir
-            ViewBag.querySelectedCategory = _postCategoryService.Get(x => x.Id == postCategoryId); //kategori id'ye göre tek kategori getiir
+            ViewBag.querySelectedCategory = _postCategoryService.Get(x => x.NormalizedTitle == category); //kategori id'ye göre tek kategori getiir
 
             ViewBag.queryGetCurrentUserInfo = _accountService.GetUserInfos();
-            ViewBag.postCategoryId= postCategoryId;
+            ViewBag.NormalizedTitle = category;
 
-            return View(_postService.GetPostById(Id, selectPageNumber));
+
+            if (category == "Kitap" || category == "Yazar")
+            {
+                var title = _postService.GetTitleByNormalized(post);
+                var queryPostApi = _restSharpService.SearchPostApi(title);
+                var postListVM = new PostListVM();
+                foreach (var item in queryPostApi.docs)
+                {
+                    var getEntry = new EntryRowVM();
+                    getEntry.Content = item.title;
+                    getEntry.UserId = 0;
+                    getEntry.CreateDate = DateTime.Now;
+                    getEntry.EntryId = 0;
+                    getEntry.UserName = item.author_name?.FirstOrDefault().ToString();
+                    getEntry.LikeCount = 0;
+                    getEntry.DislikeCount = 0;
+                    postListVM.EntryList.Add(getEntry);
+                }
+                return View(postListVM);
+            }
+            else
+            {
+                return View(_postService.GetPostById(post, selectPageNumber));
+            }
+            
 
         }
         [HttpPost]
@@ -72,6 +99,15 @@ namespace GaripSozluk.WebApp.Controllers
             ViewBag.queryDetailedSelect = _postService.GetAllDetailed(searchmodel);
 
             return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult GetPosts(string category)
+        {
+            ViewBag.querySelectedCategory = _postCategoryService.Get(x => x.NormalizedTitle == category); //kategori id'ye göre tek kategori getiir
+            var model = _postService.GetPostByCategoryString(category);
+            return View(model);
         }
 
 

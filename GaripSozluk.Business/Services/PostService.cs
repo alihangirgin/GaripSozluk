@@ -20,7 +20,8 @@ namespace GaripSozluk.Business.Services
         private readonly IBlockedUserService _blockedUserService;
         private readonly IHttpContextAccessor _httpContext;
         private readonly ILogService _logService;
-        public PostService(IPostRepository postRepository, IEntryRepository entryRepository, IEntryRatingService entryRatingService, IHttpContextAccessor httpContext, IBlockedUserService blockedUserService, ILogService logService)
+        private readonly IPostCategoryService _postCategoryService;
+        public PostService(IPostRepository postRepository, IEntryRepository entryRepository, IEntryRatingService entryRatingService, IHttpContextAccessor httpContext, IBlockedUserService blockedUserService, ILogService logService, IPostCategoryService postCategoryService)
         {
             _postRepository = postRepository;
             _entryRepository = entryRepository;
@@ -28,12 +29,36 @@ namespace GaripSozluk.Business.Services
             _httpContext = httpContext;
             _blockedUserService = blockedUserService;
             _logService = logService;
+            _postCategoryService = postCategoryService;
+        }
+
+        public string GetTitleByNormalized(string normalized)
+        {
+            return _postRepository.Get(x => x.NormalizedTitle == normalized).Title;
+        }
+
+        public List<Post> GetPostByCategoryString(string category)
+        {
+            var getCategories = _postCategoryService.GetAll().Where(x => x.NormalizedTitle == category).First();
+            var posts = _postRepository.GetAllWithEntries(getCategories.Id).ToList();
+            return posts;
         }
 
 
-        public int GetRandomId()
+        public string GetCategoryByPostString(string post)
         {
-            var idList = _postRepository.GetAll().Select(x => x.Id).ToList();
+            var getPostCategoryId = _postRepository.Get(x => x.NormalizedTitle == post).CategoryId;
+            var category = _postCategoryService.Get(x=>x.Id== getPostCategoryId).NormalizedTitle;
+            return category;
+        }
+
+
+        public string GetRandomId()
+        {
+            var yazarId = _postCategoryService.GetOrCreate("Yazar");
+            var kitapId = _postCategoryService.GetOrCreate("Kitap");
+
+            var idList = _postRepository.GetAll(x=>x.CategoryId!=yazarId && x.CategoryId!=kitapId).Select(x => x.NormalizedTitle).ToList();
             var randomIndex = new Random().Next(idList.Count - 1);
             var id = idList[randomIndex];
             return id;
@@ -75,20 +100,34 @@ namespace GaripSozluk.Business.Services
             var user = _httpContext.HttpContext.User;
             var UserId = int.Parse(user.Claims.ToList().First(x => x.Type == ClaimTypes.NameIdentifier).Value);
 
+
+
             foreach (var item in stringArray)
             {
                 var post = new Post();
+
                 if (item.EndsWith("(Kitap)"))
                 {
-                    post.CategoryId = 6;
+                    post.CategoryId = _postCategoryService.GetOrCreate("Kitap");
                 }
                 else
                 {
-                    post.CategoryId = 7;
+                    post.CategoryId = _postCategoryService.GetOrCreate("Yazar");
                 }
+
+
+                string normalizedString = item;
+                char[] oldValue = new char[] { 'ö', 'Ö', 'ü', 'Ü', 'ç', 'Ç', 'İ', 'ı', 'Ğ', 'ğ', 'Ş', 'ş', ' '};
+                char[] newValue = new char[] { 'o', 'O', 'u', 'U', 'c', 'C', 'I', 'i', 'G', 'g', 'S', 's', '-' };
+                for (int i = 0; i < oldValue.Length; i++)
+                {
+                    normalizedString = normalizedString.Replace(oldValue[i], newValue[i]);
+                }
+
 
                 post.ClickCount = 0;
                 post.Title = item;
+                post.NormalizedTitle = normalizedString;
                 post.UserId = UserId;
                 post.CreateDate = DateTime.Now;
 
@@ -133,6 +172,8 @@ namespace GaripSozluk.Business.Services
             return _postRepository.GetAll();
         }
 
+
+
         public IQueryable<Post> GetAll(int id)
         {
 
@@ -140,7 +181,7 @@ namespace GaripSozluk.Business.Services
         }
 
 
-        public List<Post> GetAllCount(int id)
+        public List<Post> GetAllCount(string title)
         {
             var user = _httpContext.HttpContext.User;
             int? UserId = null;
@@ -154,9 +195,11 @@ namespace GaripSozluk.Business.Services
                     blockedUserIdList.Add(item.BlockedUserId);
                 }
             }
+            var getCategories=_postCategoryService.GetAll().Where(x=>x.NormalizedTitle==title).First();
+
 
             var List = new List<Post>();
-            var query = _postRepository.GetAllWithEntries(id).ToList();
+            var query = _postRepository.GetAllWithEntries(getCategories.Id).ToList();
             foreach (var item in query)
             {
                 var row = new Post();
@@ -164,8 +207,8 @@ namespace GaripSozluk.Business.Services
                 row.CategoryId = item.CategoryId;
                 row.UserId = item.UserId;
                 row.Title = item.Title;
+                row.NormalizedTitle = item.NormalizedTitle;
                 row.ClickCount = item.ClickCount;
-                row.UpdateDate = item.UpdateDate;
                 row.CreateDate = item.CreateDate;
                 row.Entries = item.Entries.Where(x => !blockedUserIdList.Contains(x.UserId)).ToList();
                 List.Add(row);
@@ -230,6 +273,7 @@ namespace GaripSozluk.Business.Services
                 {
                     var searchRow = new PostViewModel();
                     searchRow.Title = item.Title;
+                    searchRow.NormalizedTitle = item.NormalizedTitle;
                     searchRow.UserId = item.UserId;
                     searchRow.ClickCount = item.ClickCount;
                     searchRow.CategoryId = item.CategoryId;
@@ -262,7 +306,7 @@ namespace GaripSozluk.Business.Services
 
 
 
-        public PostListVM GetPostById(int id, int currentPage = 1, SearchViewModel searchModel = null)
+        public PostListVM GetPostById(string title, int currentPage = 1, SearchViewModel searchModel = null)
         {
 
             var user = _httpContext.HttpContext.User;
@@ -281,13 +325,14 @@ namespace GaripSozluk.Business.Services
 
             var itemSize = 5;
             var postListVM = new PostListVM();
-            var getPost = _postRepository.Get(x => x.Id == id);
+            var getPost = _postRepository.Get(x => x.NormalizedTitle == title);
             if (getPost != null)
             {
                 postListVM.Title = getPost.Title;
                 getPost.ClickCount++;
                 postListVM.ClickCount = getPost.ClickCount;
-                postListVM.PostId = id;
+                postListVM.PostId = getPost.Id;
+                //postListVM.NormalizedTitle = title;
                 postListVM.CurrentPage = currentPage;
                 var itemCount = _entryRepository.GetAll(x => x.PostId == getPost.Id).Where(x => !blockedUserIdList.Contains(x.UserId)).Count();
                 var pageCount = itemCount / itemSize + (itemCount % itemSize > 0 ? 1 : 0);
@@ -386,7 +431,6 @@ namespace GaripSozluk.Business.Services
 
         public int AddPostsWithEntry(PostViewModel model)
         {
-            
             var isAddedBefore = _postRepository.Get(x => x.Title == model.Title);
             if(isAddedBefore ==null)
             {

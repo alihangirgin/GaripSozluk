@@ -12,13 +12,13 @@ namespace GaripSozluk.Business.Interfaces
     {
         IQueryable<Post> GetAll();
         IQueryable<Post> GetAll(int id);
-        List<Post> GetAllCount(int id);
+        List<Post> GetAllCount(string title);
         Post Get(Expression<Func<Post,bool>> expression);
         IQueryable<Post> GetAllByString(string text);
         PostViewModel AddPost(PostViewModel model);
         Post UpdatePost(Post postViewModel);
         //PostViewModel UpdatePost(int id);
-        PostListVM GetPostById(int id,int currentPage,SearchViewModel searchModel=null);
+        PostListVM GetPostById(string title, int currentPage = 1, SearchViewModel searchModel = null);
         DetailedSearchViewModel GetAllDetailed(DetailedSearchViewModel detailedSearch);
 
         void AddPostFromArrayBook(string[] stringArray);
@@ -26,7 +26,10 @@ namespace GaripSozluk.Business.Interfaces
         void AddLogPosts();
         void AddLogPostsFilter();
         int AddPostsWithEntry(PostViewModel model);
-        int GetRandomId();
+        string GetTitleByNormalized(string normalized);
+        string GetRandomId();
+        List<Post> GetPostByCategoryString(string category);
 
+        string GetCategoryByPostString(string post);
     }
 }
