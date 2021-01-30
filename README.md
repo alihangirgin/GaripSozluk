@@ -1,5 +1,5 @@
 # GARIP SOZLUK
-Garip Sozluk is .Net Core web application that has [EkşiSözlük](https://www.eksisozluk.com) EksiSozluk look like interface and features.
+Garip Sozluk is .Net Core web application that has [EkşiSözlük](https://www.eksisozluk.com) look like interface and features.
 ![alt text](https://i.imgur.com/XOeR7WQ.png)
 ## Prerequisites
   - Microsoft Visual Studio
