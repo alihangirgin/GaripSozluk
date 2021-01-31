@@ -1,0 +1,86 @@
+﻿@model GaripSozluk.Common.ViewModels.RestApiSearchVM
+@{
+    ViewData["Title"] = "Bulunan Kitaplar";
+}
+
+<h1>Bulunan Kitaplar</h1>
+
+@if (Model != null)
+{
+
+    <div class="col-md-12">
+        <ul class="list-group" id="ItemList">
+
+
+
+            @foreach (var item in Model.docs)
+            {
+
+                <li class="list-group-item">
+                    <div class="checkbox">
+
+
+                        <input type="checkbox" value="@(item.title+"(Kitap)" )" />
+
+                        <label for="Check_@item.title">Kitap Adı:@item.title---</label>
+
+                        @if (item.author_name != null)
+                        {
+                            <input type="checkbox" value="@(item.author_name.FirstOrDefault()+"(Yazar)")" />
+                            <label for="Check_@item.author_name.FirstOrDefault()">Yazar Adı:@item.author_name.FirstOrDefault()---</label>
+                        }
+
+                        <label for="Check_@item.first_publish_year">Çıkış Yılı:@item.first_publish_year</label>
+
+
+                    </div>
+                </li>
+
+            }
+
+
+            <li class="list-group-item">
+                <a class="btn btn-success btn-block" id="AddDb">Ekle</a>
+            </li>
+        </ul>
+    </div>
+
+}
+
+
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#AddDb").on("click", function (e) {
+                var arrItem = [];
+                var dataString = "";
+
+                $("#ItemList li input[type=checkbox]").each(function (index, val) {
+
+                    var checkedItem = $(val);//.attr("value")
+                    var isChecked = $(checkedItem).is(":checked", true);
+
+                    if (isChecked) {
+                        arrItem.push(checkedItem.attr("value"));
+                    };
+                });
+
+                if (arrItem.length > 0) {
+
+                    $.ajax({
+                        url: "/WebApi/AddPostFromApi",
+                        type: "POST",
+                        data: { ItemList: arrItem },
+                        success: function (response) {
+                            alert("Seçtiğiniz kitaplar eklenmiştir");
+                        }
+                    });
+                };
+
+            });
+        });
+    </script>
+}

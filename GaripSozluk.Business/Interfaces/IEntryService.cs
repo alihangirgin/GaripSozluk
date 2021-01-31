@@ -11,12 +11,8 @@ namespace GaripSozluk.Business.Interfaces
     public interface IEntryService
     {
         IQueryable<Entry> GetAll();
-        IQueryable<Entry> GetAll(int id);
         Entry Get(Expression<Func<Entry,bool>> expression);
         EntryViewModel AddEntry(EntryViewModel model);
         EntryViewModel UpdateEntry(EntryViewModel model);
-        //EntryViewModel UpdateEntry(int id);
-
-
     }
 }

@@ -45,9 +45,6 @@ namespace GaripSozluk.Business.Services
             return returnRow;
         }
 
-
-
-
         public RestApiSearchVM SearchApi(RestApiSearchVM model)
         {
             var returnRow = new RestApiSearchVM();

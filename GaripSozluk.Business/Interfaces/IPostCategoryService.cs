@@ -12,14 +12,14 @@ namespace GaripSozluk.Business.Interfaces
     public interface IPostCategoryService
     {
         IQueryable<PostCategory> GetAll();
+        List<PostCategoryViewModel> GetAllCategories();
         PostCategory Get(Expression<Func<PostCategory, bool>> expression);
+        PostCategoryViewModel GetSelectedCategory(Expression<Func<PostCategory, bool>> expression);
         PostCategoryViewModel AddPostCategory(PostCategoryViewModel model);
         PostCategoryViewModel UpdatePostCategory(PostCategoryViewModel model);
         //PostViewModel UpdatePost(int id);
 
-        int GetOrCreate(string title);
-
-        List<SelectListItem> selectListItem(string normalized);
+        List<SelectListItem> selectListItem(int id);
 
     }
 }

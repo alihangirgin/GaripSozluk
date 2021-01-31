@@ -46,7 +46,7 @@ namespace GaripSozluk.WebApp.Controllers
 
 
 
-        public IActionResult GetBlockedUsers(int blockCurrentUserId)
+        public IActionResult BlockedUsers(int blockCurrentUserId)
         {
             ViewBag.queryGetBlockedUser=_blockedUserService.GetAll(blockCurrentUserId);
 
@@ -64,7 +64,7 @@ namespace GaripSozluk.WebApp.Controllers
             }
             _blockedUserService.RemoveBlock(model);
 
-            return RedirectToAction(nameof(UserController.GetBlockedUsers), "User", new { blockCurrentUserId = model.UserId });
+            return RedirectToAction(nameof(UserController.BlockedUsers), "User", new { blockCurrentUserId = model.UserId });
         }
 
     }

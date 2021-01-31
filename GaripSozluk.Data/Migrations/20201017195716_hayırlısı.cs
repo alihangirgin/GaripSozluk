@@ -62,8 +62,7 @@ namespace GaripSozluk.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     UpdateDate = table.Column<DateTime>(nullable: true),
-                    Title = table.Column<string>(maxLength: 50, nullable: false),
-                    NormalizedTitle = table.Column<string>(maxLength: 50, nullable: false)
+                    Title = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -206,7 +205,6 @@ namespace GaripSozluk.Data.Migrations
                     CreateDate = table.Column<DateTime>(nullable: false),
                     UpdateDate = table.Column<DateTime>(nullable: true),
                     Title = table.Column<string>(maxLength: 100, nullable: false),
-                    NormalizedTitle = table.Column<string>(maxLength: 100, nullable: false),
                     UserId = table.Column<int>(nullable: false),
                     ClickCount = table.Column<int>(nullable: false),
                     CategoryId = table.Column<int>(nullable: false)

@@ -10,26 +10,33 @@ namespace GaripSozluk.Business.Interfaces
 {
     public interface IPostService
     {
+        PostViewModel AddPost(PostViewModel model);
+        int AddPostsWithEntry(PostViewModel model);
+        void AddPostFromArray(string[] stringArray);
+        int GetRandomPostId();
+        List<PostWithEntriesViewModel> GetPostListByCategoryWithEntries(int categoryId);
+
+
+
         IQueryable<Post> GetAll();
         IQueryable<Post> GetAll(int id);
-        List<Post> GetAllCount(string title);
+
+        PostWithEntriesWithPaginationViewModel GetSelectedPostWithEntries(int id, int currentPage = 1);
+        //List<PostViewModel> GetPostListByCategory(int categoryId);
         Post Get(Expression<Func<Post,bool>> expression);
-        IQueryable<Post> GetAllByString(string text);
-        PostViewModel AddPost(PostViewModel model);
-        Post UpdatePost(Post postViewModel);
+        List<PostViewModel> GetAllByString(string text);
+
+        //Post UpdatePost(Post postViewModel);
         //PostViewModel UpdatePost(int id);
-        PostListVM GetPostById(string title, int currentPage = 1, SearchViewModel searchModel = null);
+
         DetailedSearchViewModel GetAllDetailed(DetailedSearchViewModel detailedSearch);
 
-        void AddPostFromArrayBook(string[] stringArray);
+
 
         void AddLogPosts();
         void AddLogPostsFilter();
-        int AddPostsWithEntry(PostViewModel model);
-        string GetTitleByNormalized(string normalized);
-        string GetRandomId();
-        List<Post> GetPostByCategoryString(string category);
 
-        string GetCategoryByPostString(string post);
+
+
     }
 }

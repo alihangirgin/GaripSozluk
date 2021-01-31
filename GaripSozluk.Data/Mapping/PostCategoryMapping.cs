@@ -16,10 +16,6 @@ namespace GaripSozluk.Data.Mapping
             builder.Property(x => x.Title)
                 .HasMaxLength(50)
                 .IsRequired();
-
-            builder.Property(x => x.NormalizedTitle)
-                .HasMaxLength(50)
-                .IsRequired();
         }
     }
 }

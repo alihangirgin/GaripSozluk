@@ -91,34 +91,14 @@ namespace GaripSozluk.Data.Repositories
 
         }
 
-
-
-
-
-
         public async Task<int> AddPostWithEntryRepo(PostViewModel model)
         {
             await using var transaction = await _context.Database.  BeginTransactionAsync();
-
-            ////using(var dbTransaction= _context.Database.BeginTransaction())
-            ////{
-
-            ////}
-
             try
             {
 
-                string normalizedString = model.Title;
-                char[] oldValue = new char[] { 'ö', 'Ö', 'ü', 'Ü', 'ç', 'Ç', 'İ', 'ı', 'Ğ', 'ğ', 'Ş', 'ş', ' ' };
-                char[] newValue = new char[] { 'o', 'O', 'u', 'U', 'c', 'C', 'I', 'i', 'G', 'g', 'S', 's', '-' };
-                for (int i = 0; i < oldValue.Length; i++)
-                {
-                    normalizedString = normalizedString.Replace(oldValue[i], newValue[i]);
-                }
-
                 var post = new Post();
                 post.Title = model.Title;
-                post.NormalizedTitle = normalizedString;
                 post.CreateDate = DateTime.Now;
                 post.UserId = model.UserId;
                 post.CategoryId = model.Id;
@@ -149,8 +129,6 @@ namespace GaripSozluk.Data.Repositories
                     transaction.Rollback();
                     return 0;
                 }
-
-
 
                 await transaction.CommitAsync();
                 return post.Id;

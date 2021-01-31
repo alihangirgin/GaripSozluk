@@ -1,89 +1,73 @@
-﻿@model GaripSozluk.Common.ViewModels.PostListVM
+﻿@model GaripSozluk.Common.ViewModels.PostWithEntriesWithPaginationViewModel
 
 @{ ViewData["Title"] = "Home Page"; }
 
-@if (Model != null)
-{
-<h1 class="display-3">@Model.Title</h1>
-                <h1 class="display-4">@Model.ClickCount  Görüntüleme</h1>
-                                @foreach (var item in Model.EntryList)
-                                {
-                <div class="col-9">
-
-                    <div class="row border m-4 p-2">
-                        <p style="margin-right:auto; text-align:left">@item.Content</p>
-                        <p style="margin-right:auto; text-align:left">@item.UserName</p>
-                        <p style="margin-right:auto; text-align:left">@item.CreateDate</p>
-                        @*<h4><a class="btn btn-success" href="@Url.Action("Logout", "Account")">Beğen</a></h4>
-        <h4><a class="btn btn-danger" href="@Url.Action("Logout", "Account")">Beğenme</a></h4>*@
-                        @*@if (item.PostId > 0)
-                        {*@
-                            <a class="nav-link text-success col-md-2" asp-area="" asp-route-entryLikeId="@item.EntryId" asp-route-postId="@ViewBag.querySelectedPost.Id" asp-controller="Entry" asp-action="Like">Beğen @item.LikeCount</a>
-                            <a class="nav-link text-danger col-md-2" asp-area="" asp-route-entryDislikeId="@item.EntryId" asp-route-postId="@ViewBag.querySelectedPost.Id" asp-controller="Entry" asp-action="Dislike">Beğenme @item.DislikeCount</a>
-                         @*}*@
-                        @if (item.UserId > 0)
-                        {
-                            <a class="nav-link text-dark col-md-2" asp-area="" asp-route-blockUserId="@item.UserId" asp-route-postId="@ViewBag.querySelectedPost.Id" asp-controller="User" asp-action="Block">Engelle</a>
-                        } @*<p style="margin-right:auto; text-align:left">@item.CreateDate</p>*@
-                    </div>
-
-                </div>} } @*@if (ViewBag.querySelectedPost != null){*@ @*<a class="nav-link" href="#">@ViewBag.querySelectedPost.Title</a>*@ @*<h1 class="display-3">@ViewBag.querySelectedPost.Title</h1>*@ @*<h1 class="display-4">@ViewBag.querySelectedPost.ClickCount  Görüntüleme</h1>}*@
-
-
-@if (!User.Identity.IsAuthenticated)
-{
-}
-else
-{
-@if (ViewBag.querySelectedPost != null)
-{<a class="btn btn-link text-dark" asp-area="" asp-route-addEntryId="@ViewBag.querySelectedPost.Id" asp-controller="Entry" asp-action="AddEntry">Yorum Ekle</a>}}
-
 
 @if (Model != null)
 {
-<div class="row">
-    <div class="col-md-12">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" asp-area="" asp-route-selectPageNumber="@Model.PreviousPage">Geri</a>
-                </li>
-                @for (int i = 1; i <= Model.PageCount; i++)
+    <h1 class="display-3">@Model.Post.Title</h1>
+    <h1 class="display-4">@Model.Post.ClickCount  Views</h1>
+    @foreach (var item in Model.EntryList)
+     {
+        <div class="col-9">
+            <div class="row border m-4 p-2">
+                <p style="margin-right:auto; text-align:left">@item.Content</p>
+                <p style="margin-right:auto; text-align:left">@item.UserName</p>
+                <p style="margin-right:auto; text-align:left">@item.CreateDate</p>
+                @if (User.Identity.IsAuthenticated)
                 {
-                    if (i == Model.CurrentPage)
+                    <a class="nav-link text-success col-md-2" asp-area="" asp-route-entryLikeId="@item.Id" asp-route-postId="@Model.Post.Id" asp-controller="Entry" asp-action="Like">Beğen @item.LikeCount</a>
+                    <a class="nav-link text-danger col-md-2" asp-area="" asp-route-entryDislikeId="@item.Id" asp-route-postId="@Model.Post.Id" asp-controller="Entry" asp-action="Dislike">Beğenme @item.DislikeCount</a>
+                    @if( ViewBag.UserInfo.UserId == item.UserId)
                     {
-<li class="page-item active"><a class="page-link">@i</a></li>
- }
-else
+                        <a class="nav-link text-dark col-md-2" asp-area="" asp-route-Id="@item.Id" asp-route-postId="@Model.Post.Id" asp-controller="Entry" asp-action="UpdateEntry">Düzenle</a>
+                    }
+                    else
+                    {
+                        <a class="nav-link text-dark col-md-2" asp-area="" asp-route-blockUserId="@item.UserId" asp-route-postId="@Model.Post.Id" asp-controller="User" asp-action="Block">Engelle</a>
+                    }                                    
+                }
+            </div>
+
+         </div>
+     } 
+ } 
+
+@if (User.Identity.IsAuthenticated)
 {
-<li class="page-item"><a class="page-link" asp-area="" asp-route-selectPageNumber="@i">@i</a></li>
-}
-}
-                <li class="page-item"><a class="page-link" asp-area="" asp-route-selectPageNumber="@Model.NextPage">İleri</a></li>
-            </ul>
-        </nav>
-    </div>
-</div> } @*
-    @foreach (var item in ViewBag.querySelectEntry)
+    @if (Model != null)
     {
-    <div class="col-9">
+        <a class="btn btn-link text-dark" asp-area="" asp-route-postId="@Model.Post.Id" asp-controller="Entry" asp-action="AddEntry">Yorum Ekle</a>
+    }
+}
 
-        <div class="row border m-4 p-2">
-            <p style="margin-right:auto; text-align:left">@item.Content</p>
-            <p style="margin-right:auto; text-align:left">@item.UserId</p>
-            <p style="margin-right:auto; text-align:left">@item.CreateDate</p>
-            <p style="margin-right:auto; text-align:left">@item.UpdateDate</p>
-        </div>
 
-    </div>
-                    <div class="col-md-1"></div>} @*<div class="col-9">
+@if (Model != null)
+ {
+            <div class="row">
+                <div class="col-md-12">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" asp-area="" asp-route-selectPageNumber="@Model.PreviousPage">Geri</a>
+                            </li>
+                            @for (int i = 1; i <= Model.PageCount; i++)
+                            {
+                                if (i == Model.CurrentPage)
+                                {
+                                    <li class="page-item active"><a class="page-link">@i</a></li>
+                                }
+                                else
+                                {
+                                    <li class="page-item"><a class="page-link" asp-area="" asp-route-selectPageNumber="@i">@i</a></li>
+                                }
+                             }
+                            <li class="page-item"><a class="page-link" asp-area="" asp-route-selectPageNumber="@Model.NextPage">İleri</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div> 
+ } 
 
-            <div class="row border m-4 p-2">
-                <p style="margin-right:auto; text-align:left">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-            </div>
-            <div class="row border m-4 p-2">
-                <p style="margin-right:auto; text-align:left">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-            </div>
 
-        </div>
-                        <div class="col-md-1"></div>*@
+

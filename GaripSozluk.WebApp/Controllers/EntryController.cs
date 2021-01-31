@@ -33,28 +33,14 @@ namespace GaripSozluk.WebApp.Controllers
         }
 
 
-        public IActionResult Index()
-        {
-            ViewBag.query = _entryService.GetAll();
-
-            return View();
-
-        }
-
-
-
-
-
-
+        //like entries
         [Authorize]
         public IActionResult Like(EntryRatingViewModel model, int entryLikeId, int postId)
         {
             var UserId = 0;
             var user = HttpContext.User;
             var dbUser = _userManager.GetUserAsync(user).Result;
-
             UserId = dbUser.Id;
-
 
             if (ModelState.IsValid)
             {
@@ -65,15 +51,15 @@ namespace GaripSozluk.WebApp.Controllers
               return RedirectToAction(nameof(HomeController.Index), "Home", new { id=postId });
 
         }
+
+        //dislike entries
         [Authorize]
         public IActionResult Dislike(EntryRatingViewModel model, int entryDislikeId, int postId)
         {
             var UserId = 0;
             var user = HttpContext.User;
             var dbUser = _userManager.GetUserAsync(user).Result;
-
             UserId = dbUser.Id;
-
 
             if (ModelState.IsValid)
             {
@@ -85,30 +71,27 @@ namespace GaripSozluk.WebApp.Controllers
 
         }
 
-
+        //add entry get
         [HttpGet]
         public IActionResult AddEntry()
         {
-
             return View();
         }
 
+        //add entry post
         [HttpPost]
-        public IActionResult AddEntryAsync (EntryViewModel model, int addEntryId)
+        public IActionResult AddEntry(EntryViewModel model, int postId)
         {
-            var UserId = 0;
+            var UserId=0;
             var user = HttpContext.User;
             var dbUser = _userManager.GetUserAsync(user).Result;
-
             UserId = dbUser.Id;
-
-
             if (ModelState.IsValid)
             {
-                model.Id = addEntryId;
+                model.PostId = postId;
                 model.UserId = UserId;
-                var entity = _entryService.AddEntry(model);
-                if (entity.Id > 0)
+                var entryEntity = _entryService.AddEntry(model);
+                if (entryEntity.Id > 0)
                 {
                     return RedirectToAction(nameof(HomeController.Index), "Home");
                 }
@@ -121,14 +104,21 @@ namespace GaripSozluk.WebApp.Controllers
             return View();
         }
 
+        //update entry get
         [HttpGet]
-        public IActionResult UpdateEntry(int id)
+        public IActionResult UpdateEntry(int Id)
         {
-            var model = _entryService.Get(x => x.Id == id);
-            var entryViewModel = new EntryViewModel() { Id = model.Id, Content = model.Content };
+            var entry = _entryService.Get(x => x.Id == Id);
+            var entryViewModel = new EntryViewModel();
+            if (entry != null)
+            {
+                entryViewModel.Id = entry.Id;
+                entryViewModel.Content = entry.Content;
+            }
             return View(entryViewModel);
         }
 
+        //update entry post
         [HttpPost]
         public IActionResult UpdateEntry(EntryViewModel model)
         {
@@ -137,7 +127,7 @@ namespace GaripSozluk.WebApp.Controllers
                 var entity = _entryService.UpdateEntry(model);
                 if (entity.Id > 0)
                 {
-                    return RedirectToAction(nameof(EntryController.Index), "Entry");
+                    return RedirectToAction(nameof(HomeController.Index), "Home", new { id = model.PostId });
                 }
                 else
                 {
@@ -146,34 +136,6 @@ namespace GaripSozluk.WebApp.Controllers
             }
             return View();
         }
-
-        //public IActionResult DeleteEntry(int id)
-        //{
-        //    var model = _entryService.DeleteEntry(id);
-
-        //    return View(entryViewModel);
-        //}
-
-        //[HttpPost]
-        //public IActionResult UpdateEntry(EntryViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var entity = _entryService.UpdateEntry(model);
-        //        if (entity.Id > 0)
-        //        {
-        //            return RedirectToAction(nameof(EntryController.Index), "Entry");
-        //        }
-        //        else
-        //        {
-        //            ModelState.AddModelError(string.Empty, "Kayıt başarısız");
-        //        }
-        //    }
-        //    return View();
-        //}
-
-
-
 
     }
 }

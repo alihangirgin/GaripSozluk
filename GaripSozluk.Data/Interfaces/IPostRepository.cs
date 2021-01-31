@@ -11,7 +11,7 @@ namespace GaripSozluk.Data.Interfaces
     public interface IPostRepository : IBaseRepository<Post>
     {
         IQueryable<Post> GetAllByCategoryId(int id);
-        IQueryable<Post> GetAllWithEntries(int title);
+        IQueryable<Post> GetAllWithEntries(int id);
 
 
        Task AddLogPosts(LogViewModel model);

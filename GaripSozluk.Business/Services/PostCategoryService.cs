@@ -24,52 +24,14 @@ namespace GaripSozluk.Business.Services
             _httpContext = httpContext;
         }
 
-        public int GetOrCreate(string title)
-        {
-            var get = _postCategoryRepository.Get(x => x.Title == title);
-            if(get!=null)
-            {
-                return get.Id;
-            }
-            else
-            {
-                string normalizedString =title;
-                char[] oldValue = new char[] { 'ö', 'Ö', 'ü', 'Ü', 'ç', 'Ç', 'İ', 'ı', 'Ğ', 'ğ', 'Ş', 'ş', ' ' };
-                char[] newValue = new char[] { 'o', 'O', 'u', 'U', 'c', 'C', 'I', 'i', 'G', 'g', 'S', 's', '-' };
-                for (int i = 0; i < oldValue.Length; i++)
-                {
-                    normalizedString = normalizedString.Replace(oldValue[i], newValue[i]);
-                }
-
-                var create = new PostCategory();
-                create.Title = title;
-                create.NormalizedTitle = normalizedString;
-                create.CreateDate = DateTime.Now;
-                _postCategoryRepository.Add(create);
-                _postCategoryRepository.SaveChanges();
-
-                return create.Id;
-            }
-        }
-
         public PostCategoryViewModel AddPostCategory(PostCategoryViewModel model)
         {
-
-            string normalizedString = model.Title;
-            char[] oldValue = new char[] { 'ö', 'Ö', 'ü', 'Ü', 'ç', 'Ç', 'İ', 'ı', 'Ğ', 'ğ', 'Ş', 'ş', ' ' };
-            char[] newValue = new char[] { 'o', 'O', 'u', 'U', 'c', 'C', 'I', 'i', 'G', 'g', 'S', 's', '-' };
-            for (int i = 0; i < oldValue.Length; i++)
-            {
-                normalizedString = normalizedString.Replace(oldValue[i], newValue[i]);
-            }
-
-
             var postCategory = new PostCategory()
             {
-                Title = model.Title,
-                NormalizedTitle = normalizedString
+                Title = model.Title
             };
             postCategory.CreateDate = DateTime.Now;
+            postCategory.UpdateDate = DateTime.Now;
             //postCategory.UserId = 1;
             //postCategory.CategoryId = 1;
             //postCategory.ClickCount = 1;
@@ -116,6 +78,15 @@ namespace GaripSozluk.Business.Services
             return _postCategoryRepository.Get(expression);
         }
 
+        public PostCategoryViewModel GetSelectedCategory(Expression<Func<PostCategory, bool>> expression)
+        {
+            var postCategory = Get(expression);
+            var model = new PostCategoryViewModel();
+            model.Id = postCategory.Id;
+            model.Title = postCategory.Title;
+            return model;
+        }
+
         public IQueryable<PostCategory> GetAll()
         {
             var isAdmin = false;
@@ -138,9 +109,25 @@ namespace GaripSozluk.Business.Services
             {
                 return _postCategoryRepository.GetAll().Where(x=> x.Id !=8);
             }
-
-            
         }
+
+        public List<PostCategoryViewModel> GetAllCategories()
+        {
+            var postcategories = GetAll();
+            var modelList = new List<PostCategoryViewModel>();
+            if(postcategories!=null)
+            {
+                foreach (var item in postcategories)
+                {
+                    var model = new PostCategoryViewModel();
+                    model.Id = item.Id;
+                    model.Title = item.Title;
+                    modelList.Add(model);
+                }
+            }
+            return modelList;
+        }
+
 
         public PostCategoryViewModel UpdatePostCategory(PostCategoryViewModel model)
         {
@@ -148,14 +135,14 @@ namespace GaripSozluk.Business.Services
         }
 
 
-        public List<SelectListItem> selectListItem(string normalized)
+        public List<SelectListItem> selectListItem(int id)
         {
             var newListRow = new List<SelectListItem>();
             var categories = _postCategoryRepository.GetAll();
             foreach (var item in categories)
             {
                 var newList = new SelectListItem();
-                if(item.NormalizedTitle==normalized)
+                if(item.Id==id)
                 {
                     newList.Selected = true;
                 }

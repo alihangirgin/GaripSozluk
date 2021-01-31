@@ -1,8 +1,6 @@
 ﻿@model GaripSozluk.Common.ViewModels.DetailedSearchViewModel
 
-@{
-    ViewData["Title"] = "DetailedSearch";
-}
+@{ ViewData["Title"] = "DetailedSearch"; }
 
 <h1>DetailedSearch</h1>
 
@@ -28,9 +26,6 @@
                 <span asp-validation-for="DateTwo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                @*<label asp-for="SortType" class="control-label"></label>
-                    <input asp-for="SortType" class="form-control" />
-                    <span asp-validation-for="SortType" class="text-danger"></span>*@
                 <select name="SortType">
                     <option value="1">Yeniden Eskiye</option>
                     <option value="2">Eskiden Yeniye</option>
@@ -44,14 +39,10 @@
     </div>
 </div>
 
-@if (ViewBag.queryDetailedSelect != null)
+@if (Model != null)
 {
-    @foreach (var item in ViewBag.queryDetailedSelect.DetailedSearchPosts)
-    {
-@*<a class="btn btn-light d-flex justify-content-between align-items-center" asp-route-postCategoryId="@ViewBag.postCategoryId" asp-controller="home" asp-action="index" asp-route-Id="@item.Id">*@
-    <a class="btn btn-light d-flex justify-content-between align-items-center" href="/yazi/@item.NormalizedTitle">
-        @item.Title
-    </a>
-    }
-    }
-    
+@foreach (var item in Model.DetailedSearchPostResults)
+{
+<a class="btn btn-light d-flex justify-content-between align-items-center" asp-route-postCategoryId="@ViewBag.postCategoryId" asp-controller="home" asp-action="index" asp-route-Id="@item.Id">
+    @item.Title
+</a>}}

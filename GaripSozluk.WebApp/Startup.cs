@@ -111,8 +111,8 @@ namespace GaripSozluk.WebApp
             services.AddHealthChecksUI(setupSettings: setup =>
             {
                 setup.AddHealthCheckEndpoint("Basic healthcheck", "https://localhost:44377/healthcheck");
-                
-            }).AddInMemoryStorage(); 
+
+            }).AddInMemoryStorage();
 
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
@@ -152,30 +152,19 @@ namespace GaripSozluk.WebApp
 
             app.UseEndpoints(endpoints =>
             {
-
-
-                endpoints.MapControllerRoute(
-                    name: "default2",
-                //pattern: "{controller=Home}/{action=Index}/{id?}");
-                    pattern: "yazi/{post?}",
-                   defaults: new { controller = "Home", action = "Index", });
-
-
-
-
                 endpoints.MapControllerRoute(
                     name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-                //pattern: "{controller=Home}/{action=Index}/{category?}/{header?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                     //pattern: "{controller=Home}/{action=Index}/{category?}/{header?}");
 
-                //endpoints.MapHealthChecks("/healthcheck", new HealthCheckOptions()
-                //{
-                //    Predicate = _ => true,
-                //    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                //});
-                //endpoints.MapHealthChecksUI();
+            //endpoints.MapHealthChecks("/healthcheck", new HealthCheckOptions()
+            //{
+            //    Predicate = _ => true,
+            //    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            //});
+            //endpoints.MapHealthChecksUI();
 
-            });
+        });
         }
     }
 }

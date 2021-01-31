@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace GaripSozluk.Common.ViewModels
 {
@@ -10,7 +11,6 @@ namespace GaripSozluk.Common.ViewModels
         [Display(Name = "Başlık")]
         [Required(ErrorMessage = "Başlık boş bırakılamaz")]
         public string Title { get; set; }
-        public string NormalizedTitle { get; set; }
 
         public string Comment { get; set; }
 
@@ -19,5 +19,7 @@ namespace GaripSozluk.Common.ViewModels
         public int CategoryId { get; set; }
         public int ClickCount { get; set; }
 
+        public DateTime CreateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
     }
 }

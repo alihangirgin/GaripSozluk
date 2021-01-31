@@ -15,12 +15,12 @@
         <div class="container">
             <div class="row sticky-top">
                 <nav class="navbar-brand col-md-2" asp-area="" asp-controller="Home" asp-action="Index">Garip Sözlük</nav>
-                <form class="form-inline" asp-controller="home" asp-action="SearchResult" method="post">
+                <form class="form-inline" asp-controller="Post" asp-action="Search" method="post">
                     <input class="form-control mr-sm-2 col-md-8" name="searchText" type="text" placeholder="Search">
                     <button class="btn btn-success" type="submit">Search</button>
                 </form>
-                <a class="btn btn-link text-light" href="/Home/DetailedSearch">Detaylı Ara</a>
-                <a class="btn btn-link text-light" href="/WebApi/Index">Web Api</a>
+                <a class="btn btn-link text-light" href="/Post/DetailedSearch">Detaylı Ara</a>
+                <a class="btn btn-link text-light" href="/WebApi/Search">Web Api</a>
                 <a class="btn btn-link text-light" href="/Log/Index">Log</a>
                 <a class="btn btn-link text-light" href="/ApiPost/GetPosts">Post Getir</a>
                 <a class="btn btn-link text-light" asp-controller="Post" asp-action="Random">Rastgele</a>
@@ -35,30 +35,30 @@
                 }
                 else
                 {
-                    @if (ViewBag.querySelectedCategory != null)
+                    @if (ViewBag.SelectedCategory != null)
                     {
-                        <a class="btn btn-link text-light" asp-area="" asp-route-category="@ViewBag.querySelectedCategory.NormalizedTitle" asp-controller="Post" asp-action="AddPost">Başlık Aç</a>}
+                        <a class="btn btn-link text-light" asp-area="" asp-route-addPostId="@ViewBag.SelectedCategory.Id" asp-controller="Post" asp-action="AddPost">Başlık Aç</a>
+                    }
                     <a class="btn btn-link text-light" href="/PostCategory/AddPostCategory">Kategori Aç</a>
                     <a class="btn btn-link text-light" href="#">@User.Identity.Name</a>
                     <h4><a class="btn btn-light" href="@Url.Action("Logout", "Account")">Çıkış</a></h4> @*<a class="btn btn-link text-light col-md-1" href="/User/GetBlockedUsers">Engellenen Kullanıcılar</a>*@
-                    @if (ViewBag.queryGetCurrentUserInfo != null)
+                    @if (ViewBag.UserInfo != null)
                     {
-                        <a class="nav-link text-light col-md-2" asp-area="" asp-route-blockCurrentUserId="@ViewBag.queryGetCurrentUserInfo.UserId" asp-controller="User" asp-action="GetBlockedUsers">Engellenen Kullanıcılar</a>
+                        <a class="nav-link text-light col-md-2" asp-area="" asp-route-blockCurrentUserId="@ViewBag.UserInfo.UserId" asp-controller="User" asp-action="GetBlockedUsers">Engellenen Kullanıcılar</a>
                     }
                 }
                 <div class="row col-12">
                     <div class="navbar-collapse bg-dark navbar-dark collapse d-sm-inline-flex flex-sm-row-reverse col-12">
-                        @if (ViewBag.queryCategory != null)
+                        @*print all categories*@
+                        @if (ViewBag.CategoryList != null)
                         {
-                            @foreach (var item in ViewBag.queryCategory)
+                            @foreach (var item in ViewBag.CategoryList)
                             {
                                 <div class="col-md-2">
-                                    @*kategoriler*@
-                                    @*bunu kaldırınca yukarıdan kategoriye tıklandığında kategori seçmiyor*@
-                                    <a class="nav-link text-light col-md-2 calistir" data-category="@item.NormalizedTitle">#@item.Title</a>
+                                    <a class="nav-link text-light col-md-2" asp-area="" asp-route-postCategoryId="@item.Id" asp-controller="Home" asp-action="Index">#@item.Title</a>
                                 </div>
                             }
-                        }
+                         }
                     </div>
                 </div>
             </div>
@@ -66,33 +66,61 @@
     </nav>
 
     <div class="row">
-        <div class="group col-md-2 border" id="postListByCategory" style="overflow:auto;height:100%; position:fixed;">
+        <div class="group col-md-2 border" style="overflow:auto;height:100%; position:fixed;">
             <br />
+            @*display posts from selected category in left edge*@
             <ul class="list-group">
-                @if (ViewBag.query != null && ViewBag.querySelectedCategory != null)
-                {                       /*kategori başlık*/
-                    <h1 class="display-6">@ViewBag.querySelectedCategory.Title</h1>
-
-                    @foreach (var item in (List<GaripSozluk.Data.Domain.Post>) ViewBag.query)
+                @if (ViewBag.PostList != null && ViewBag.SelectedCategory != null)
+                {                      
+                    <h1 class="display-6">@ViewBag.SelectedCategory.Title</h1>
+                    @foreach (var item in ViewBag.PostList)
                     {
                         <li class="list-group-item border-0">
-                            <a class="btn btn-light d-flex justify-content-between align-items-center" href="/yazi/@item.NormalizedTitle">
-                                @item.Title
-                                @{
-                                    var entryCount = (item.Entries?.Count - 1 ?? 0);
-                                    if (entryCount > 0)
-                                    {
-                                        <span class="badge badge-primary badge-pill">@entryCount</span>
+                            @if (ViewBag.postCategoryId == 6)
+                            {
+                                <a class="btn btn-light d-flex justify-content-between align-items-center" asp-route-itemTitle="@item.Post.Title" asp-route-postCategoryId="@ViewBag.postCategoryId" asp-controller="WebApi" asp-action="SearchFromPost" asp-route-Id="@item.Post.Id">
+                                    @item.Post.Title
+                                    @{
+                                        var entryCount = (item.EntryList?.Count - 1 ?? 0);
+                                        if (entryCount > 0)
+                                        {
+                                            <span class="badge badge-primary badge-pill">@entryCount</span> 
+                                        } 
                                     }
-                                }
-                            </a>
+                                </a>
+                            }
+                            @if (ViewBag.postCategoryId == 7)
+                            {
+                                <a class="btn btn-light d-flex justify-content-between align-items-center" asp-route-itemTitle="@item.Post.Title" asp-route-postCategoryId="@ViewBag.postCategoryId" asp-controller="WebApi" asp-action="SearchFromPost" asp-route-Id="@item.Post.Id">
+                                    @item.Post.Title
+                                    @{ 
+                                        var entryCount = (item.EntryList?.Count - 1 ?? 0);
+                                        if (entryCount > 0)
+                                        {
+                                            <span class="badge badge-primary badge-pill">@entryCount</span> 
+                                        }
+                                    }
+                                </a>
+                            }
+                            @if (ViewBag.postCategoryId != 7 && ViewBag.postCategoryId != 6)
+                            {
+                                <a class="btn btn-light d-flex justify-content-between align-items-center" asp-route-postCategoryId="@ViewBag.postCategoryId" asp-controller="Home" asp-action="index" asp-route-postId="@item.Post.Id">
+                                    @item.Post.Title
+                                    @{
+                                        var entryCount = (item.EntryList?.Count - 1 ?? 0);
+                                        if (entryCount > 0)
+                                        {
+                                            <span class="badge badge-primary badge-pill">@entryCount</span> 
+                                        } 
+                                
+                                    }
+                                </a> 
+                             }
                         </li>
-                    }
-                }
+                     }
+                 }
             </ul>
         </div>
-
-
 
         <div class="col-md-1"></div>
         <div class="container col-md-8">
@@ -102,10 +130,6 @@
         </div>
         <div class="col-md-1"></div>
     </div>
-
-
-
-
 
     <div class="container">
         <main role="main" class="pb-3">
@@ -127,31 +151,4 @@
 </html>
 
 
-
-<script>
-    $(document).ready(function () {
-        $(".calistir").click(function () {
-            var category = $(this).data("category");
-            $.ajax({
-                url: '/Home/GetPosts?category=' + category,
-                type: 'POST',
-                //dataType: 'json',
-                success: function (data) {
-                    debugger
-                    $("#postListByCategory").html(data);
-                },
-                error: function () {
-                    debugger
-                },
-                done: function () {
-                    debugger
-                },
-                fail: function (xhr, textStatus, errorThrown) {
-                    debugger;
-                    alert('request failed');
-                }
-            });
-        });
-    });
-</script>
 

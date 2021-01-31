@@ -24,50 +24,38 @@ namespace GaripSozluk.WebApp.Controllers
             _postService = postService;
         }
 
-        public IActionResult Index()
+        public IActionResult Search()
         {
             return View();
         }
 
-
-
-        public IActionResult Search()
+        public IActionResult SearchResult()
         {
             return View();
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult Search(RestApiSearchVM searchmodel = null)
+        public IActionResult SearchResult(RestApiSearchVM searchmodel = null)
         {
-            searchmodel=_restSharpService.SearchApi(searchmodel);
+            searchmodel = _restSharpService.SearchApi(searchmodel);
 
             return View(searchmodel);
         }
 
-
         public IActionResult SearchFromPost(string itemTitle)
         {
-           var queryPostApi = _restSharpService.SearchPostApi(itemTitle);
+            var queryPostApi = _restSharpService.SearchPostApi(itemTitle);
 
             return View(queryPostApi);
         }
 
-
-        
         [HttpPost]
-        public IActionResult AddFromApi(string[] ItemList)
+        public IActionResult AddPostFromApi(string[] ItemList)
         {
-            _postService.AddPostFromArrayBook(ItemList);
+            _postService.AddPostFromArray(ItemList);
             return Json(new { status = "success" });
         }
-
-
-
-
-
-
-
 
     }
 }

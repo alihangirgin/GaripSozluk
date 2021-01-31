@@ -32,31 +32,21 @@ namespace GaripSozluk.WebApp.Controllers
         }
 
 
-        public IActionResult Index()
-        {
-            //ViewBag.query = _postService.GetAll();
-
-
-
-            return View();
-
-        }
-
-
+        //random post page
         public IActionResult Random()
         {
-            var randomId = _postService.GetRandomId();
-            return Redirect(Url.Action("Index", "Home", new { category = "Kategori1", post = randomId }));
+            var randomId = _postService.GetRandomPostId();
+            return Redirect(Url.Action("Index", "Home", new { Id = randomId }));
         }
 
 
 
         [HttpGet]
-        public IActionResult AddPost(string category)
+        public IActionResult AddPost(int addPostId)
         {
 
-            ViewBag.queryCategoryTwo = _postCategoryService.selectListItem(category);
-            ViewBag.catagoryIdSelectItem = category;
+            ViewBag.queryCategoryTwo = _postCategoryService.selectListItem(addPostId);
+            ViewBag.catagoryIdSelectItem = addPostId;
 
 
             return View();
@@ -78,7 +68,7 @@ namespace GaripSozluk.WebApp.Controllers
                 var postId = _postService.AddPostsWithEntry(model);
                 if (postId > 0)
                 {
-                    return RedirectToAction(nameof(HomeController.Index), "Home", new { category="Kategori1", post=postId });
+                    return RedirectToAction(nameof(HomeController.Index), "Home", new { id = postId });
                 }
                 else
                 {
@@ -88,6 +78,29 @@ namespace GaripSozluk.WebApp.Controllers
 
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Search(string searchText)
+        {
+            var searchPostResults = new List<PostViewModel>();
+            searchPostResults = _postService.GetAllByString(searchText);
+            return View(searchPostResults);
+        }
+
+        public IActionResult DetailedSearch()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult DetailedSearch(DetailedSearchViewModel searchmodel = null)
+        {
+            searchmodel = _postService.GetAllDetailed(searchmodel);
+            return View(searchmodel);
+        }
+
+
+
 
         [HttpGet]
         public IActionResult UpdatePost(int id)
@@ -96,23 +109,23 @@ namespace GaripSozluk.WebApp.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public IActionResult UpdatePost(Post model)
-        {
-            if (ModelState.IsValid)
-            {
-                var entity = _postService.UpdatePost(model);
-                if (entity.Id > 0)
-                {
-                    return RedirectToAction(nameof(PostController.Index), "Post");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Kayıt başarısız");
-                }
-            }
-            return View();
-        }
+        //[HttpPost]
+        //public IActionResult UpdatePost(Post model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var entity = _postService.UpdatePost(model);
+        //        if (entity.Id > 0)
+        //        {
+        //            return RedirectToAction(nameof(PostController.Index), "Post");
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError(string.Empty, "Kayıt başarısız");
+        //        }
+        //    }
+        //    return View();
+        //}
 
         //public IActionResult DeletePost(int id)
         //{

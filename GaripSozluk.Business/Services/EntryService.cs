@@ -18,18 +18,12 @@ namespace GaripSozluk.Business.Services
 
         public EntryViewModel AddEntry(EntryViewModel model)
         {
-            var entry = new Entry()
-            {
-                Content = model.Content
-            };
+            var entry = new Entry();
+
+            entry.Content = model.Content;
             entry.CreateDate = DateTime.Now;
-            entry.UpdateDate = DateTime.Now;
             entry.UserId = model.UserId;
-            entry.PostId = model.Id;
-            //entry.CategoryId = model.Id;
-            //entry.ClickCount = 0;
-
-
+            entry.PostId = model.PostId;
             var entity = _entryRepository.Add(entry);
 
             try
@@ -47,9 +41,8 @@ namespace GaripSozluk.Business.Services
         public EntryViewModel UpdateEntry(EntryViewModel entryViewModel)
         {
             var model = _entryRepository.Get(x => x.Id == entryViewModel.Id);
-            //model.Title = entryViewModel.Title;
+            model.Content = entryViewModel.Content;
             model.UpdateDate = DateTime.Now;
-            //model.ClickCount = entryViewModel.ClickCount;
 
             try
             {
@@ -75,23 +68,6 @@ namespace GaripSozluk.Business.Services
 
             return _entryRepository.GetAll();
         }
-
-        //Todo: bu methodun adı GetAllEntriesByPostId olarak değişebilir. bu projeyi yazan tek kişi için sorun olmaz ama, yarın bir gün bir ekipte çalışırken senin dışında çalışan kişilerle beraber bir standart belirlemek durumundasınız. Senin yazdığın kodu o anlamama durumu yaşamaması için isimlendirmeleri standart hale getirmelisin.
-        public IQueryable<Entry> GetAll(int id)
-        {
-
-            return _entryRepository.GetAll(x => x.PostId == id);
-        }
-
-
-
-
-        //public EntryViewModel UpdateEntry(EntryViewModel model)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-
 
     }
 }

@@ -11,6 +11,6 @@ namespace GaripSozluk.Common.ViewModels
         public DateTime? DateTwo { get; set; }
         public int SortType { get; set; }
 
-        public List<PostViewModel> DetailedSearchPosts {get; set;}
+        public List<PostViewModel> DetailedSearchPostResults {get; set;}
     }
 }
