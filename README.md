@@ -3,13 +3,13 @@ Garip Sozluk is .Net Core web application that has [EkşiSözlük](https://www.e
 ![alt text](https://i.imgur.com/XOeR7WQ.png)
 ## Prerequisites
   - Microsoft Visual Studio
-  - .NET Core 3.1
+  - .NET 5.0
   - Microsoft SQL Server Management Studio
   - PostgreSql
 ## Techs
   - C#
-  - Asp .Net Core MVC
-  - Asp .Net Core Web Api
+  - Asp.Net MVC
+  - Asp.Net Web Api
   - Entity Framework Core
   - Language Integrated Query(LINQ)
   - SQL

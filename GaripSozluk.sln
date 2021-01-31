@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GaripSozluk.Business", "Gar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GaripSozluk.WebApp", "GaripSozluk.WebApp\GaripSozluk.WebApp.csproj", "{090B2DDB-C000-40FF-929B-A37E657935E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{88F3D06B-16E0-4941-BAC9-FB2BEDCF0FF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{88F3D06B-16E0-4941-BAC9-FB2BEDCF0FF3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{42C7D092-6D0C-4FC7-B0B6-58C85CE24A7D}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
