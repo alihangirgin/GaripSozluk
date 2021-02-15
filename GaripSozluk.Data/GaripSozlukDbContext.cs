@@ -29,7 +29,7 @@ namespace GaripSozluk.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseSqlServer("Server=ALIHAN; Database=GaripSozlukDB18; Trusted_Connection=True;Integrated Security=true;");
+                .UseSqlServer("Server=.; Database=GaripSozlukDB18; Trusted_Connection=True;Integrated Security=true;");
             base.OnConfiguring(optionsBuilder);
 
         }
