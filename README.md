@@ -32,7 +32,7 @@ Garip Sozluk is .Net Core web application that has [EkşiSözlük](https://www.e
   - Configure your PostgreSql connection string under GaripSozluk.WebApp appsettings.json
   - Type the following command:
 ```sh
- update-database -Context GaripSozlukDbContext
+ update-database -Context LogDbContext
 ```
 ## Architecture of the Project
 As it is a basic and instructive project, a simple non-advanced layer is used. Four layers were used.
