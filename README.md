@@ -27,8 +27,12 @@ Garip Sozluk is .Net Core web application that has [EkşiSözlük](https://www.e
   - Open Package Manager Console in Visual Studio
   - Type the following command:
 ```sh
- update-database
+ update-database -Context GaripSozlukDbContext
 ```
+  - Configure your PostgreSql connection string under GaripSozluk.WebApp appsettings.json
+  - Type the following command:
+```sh
+ update-database -Context LogDbContext
   - Run WebApp and Api as Multiple startup project
 
 ## Architecture of the Project

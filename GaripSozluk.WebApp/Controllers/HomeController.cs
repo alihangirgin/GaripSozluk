@@ -33,7 +33,7 @@ namespace GaripSozluk.WebApp.Controllers
         }
 
         //main screen-returns the selected post in the selected category with entries to the index page, and also get data to viewbags to pass layout
-        public IActionResult Index(int postCategoryId=1, int postId = 2 ,int selectPageNumber=1)
+        public IActionResult Index(int postCategoryId=1, int postId = 1 ,int selectPageNumber=1)
         {
             ViewBag.UserInfo = _accountService.GetUserInfos();
             ViewBag.SelectedCategory = _postCategoryService.GetSelectedCategory(x => x.Id == postCategoryId);

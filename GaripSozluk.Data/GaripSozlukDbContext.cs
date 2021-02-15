@@ -36,7 +36,6 @@ namespace GaripSozluk.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
 
             builder.ApplyConfiguration(new BlockedUserMap());
             builder.ApplyConfiguration(new PostCategoryMapping());
@@ -213,6 +212,7 @@ namespace GaripSozluk.Data
                 }
             });
 
+            base.OnModelCreating(builder);
         }
     }
 }
