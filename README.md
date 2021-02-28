@@ -35,7 +35,7 @@ Garip Sozluk is .Net Core web application that has [EkşiSözlük](https://www.e
  update-database -Context LogDbContext
 ```
 ## Architecture of the Project
-As it is a basic and instructive project, a simple non-advanced layer is used. Four layers were used.
+As it is a basic and instructive project, a simple non-advanced architecture is used. Four layers were used.
 - GaripSozluk.Business Layer
 Here are the services and their interfaces we have defined to reduce the workload on the controller. Crud operations are defined by calling repositories in the methods in the services and the parameters returned from the services are sent to the controllers as a view model. Therefore, it is dependent on data layer and common layer. Also, each method is defined in the interface.
 - GaripSozluk.Common Layer
